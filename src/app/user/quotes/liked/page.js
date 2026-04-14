@@ -15,7 +15,7 @@ export default function LikedQuotesPage() {
           My Liked Quotes ❤️
         </H3>
 
-        <div className='flex flex-col gap-6 w-full'>
+        <div className='flex flex-col gap-6 w-full mt-4'>
           {likedQuotes.length === 0 ? (
             <div className="bg-white/50 p-10 rounded-lg text-center shadow-sm">
               <p className='text-slate-600 text-lg italic'>

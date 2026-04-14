@@ -26,12 +26,12 @@ export default function RootLayout({children}) {
     >
       <body className="min-h-full">
       <QuotesProvider>
-        <nav>
-        <ul>
-          <li>
+        <nav className="bg-gray-400 text-slate-100 p-4 flex">
+        <ul className="flex gap-8 w-full px-4">
+          <li className="hover:text-blue-900">
             <Link href='/'>Home</Link>
           </li>
-          <li>
+          <li className="hover:text-blue-900">
             <Link href='/user/quotes/liked'>Liked Quotes</Link>
           </li>
         </ul>
