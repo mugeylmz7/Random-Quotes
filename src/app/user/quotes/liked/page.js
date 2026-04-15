@@ -57,5 +57,3 @@ export default function LikedQuotesPage() {
     </main>
   );
 }
-
-// Code review için düzenleme
