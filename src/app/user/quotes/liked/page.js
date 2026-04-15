@@ -58,4 +58,4 @@ export default function LikedQuotesPage() {
   );
 }
 
-// Code review için düzenleme
+// Final review branch
