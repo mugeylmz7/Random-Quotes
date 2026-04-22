@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import {QuotesProvider} from "@/app/QuotesContext";
-import Link from "next/link";
+import { QuotesProvider } from "@/app/QuotesContext";
+import { TopNav } from "./NavBar";
+import { ThemeProvider } from "@/app/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,29 +19,20 @@ export const metadata = {
   description: "Random Quotes Application 130625",
 };
 
-export default function RootLayout({children}) {
+export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} min-h-full`}
     >
-      <body className="min-h-full">
-      <QuotesProvider>
-        <nav className="bg-gray-400 text-slate-100 p-4 flex">
-        <ul className="flex gap-8 w-full px-4">
-          <li className="hover:text-blue-900">
-            <Link href='/'>Home</Link>
-          </li>
-          <li className="hover:text-blue-900">
-            <Link href='/user/quotes/liked'>Liked Quotes</Link>
-          </li>
-        </ul>
-      </nav>
-        {children}
-      
-      </QuotesProvider>
+      <body className="min-h-screen w-full">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <QuotesProvider>
+            <TopNav />
+            {children}
+          </QuotesProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
-
 }
