@@ -1,20 +1,43 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useState, ReactNode } from "react";
 import { quotes as initialQuotes } from "@/quotes";
 import { getRandomNumber } from "@/utils/helper-functions";
 
-export const QuotesContext = createContext();
+export interface Quote {
+  id: number;
+  quote: string;
+  author: string;
+  likeCount: number;
+  isLiked?: boolean;
+}
+
+interface QuotesContextType {
+  quotes: Quote[];
+  quoteIndex: number;
+  likedQuotes: Quote[];
+  handleLikeQuote: (quote: Quote) => void;
+  handleUnlikeQuote: (quote: Quote) => void;
+  handleNextQuote: () => void;
+}
+
+
+
+export const QuotesContext = createContext<QuotesContextType>({} as QuotesContextType);
+
+interface QuotesProviderProps {
+  children: ReactNode;
+}
 
 // Depoya verileri koyacak ve dağıtacak Provider (Sağlayıcı) bileşenimiz
-export function QuotesProvider({ children }) {
+export function QuotesProvider({ children }: QuotesProviderProps) {
   // --- VERİLER ---
-  const [quotes, setQuotes] = useState(initialQuotes); // 1. Sözlerin listesi ve şu an gösterilen sözün indexi için state'ler oluşturuyoruz.
-  const [quoteIndex, setQuoteIndex] = useState(0); // 2. Aktif sözün sırası (Başlangıç değeri 0)
-  const [likedQuotes, setLikedQuotes] = useState([]); // 3. Beğenilen sözler listesi buraya gelecek
+  const [quotes, setQuotes] = useState<Quote[]>(initialQuotes); // 1. Sözlerin listesi ve şu an gösterilen sözün indexi için state'ler oluşturuyoruz.
+  const [quoteIndex, setQuoteIndex] = useState<number>(0); // 2. Aktif sözün sırası (Başlangıç değeri 0)
+  const [likedQuotes, setLikedQuotes] = useState<Quote[]>([]); // 3. Beğenilen sözler listesi buraya gelecek
 
   // --- FONKSİYONLAR ---
-  function handleLikeQuote(quote) {
+  function handleLikeQuote(quote: Quote) {
     // Beğenilen sözü likedQuotes listesine ekliyoruz
     const isAlreadyLiked = likedQuotes.find((q) => q.id === quote.id);
 
@@ -34,7 +57,7 @@ export function QuotesProvider({ children }) {
   }
 
 
-  function handleUnlikeQuote(quote) {
+  function handleUnlikeQuote(quote: Quote) {
     // 1. Favori listesinden çıkar
     setLikedQuotes(likedQuotes.filter((q) => q.id !== quote.id));
 
