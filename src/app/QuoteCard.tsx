@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H3 } from "@/components/typography/H3";
 import { Quote } from "@/app/QuotesContext";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface QuoteCardProps {
   currentQuote: Quote;
@@ -18,6 +19,8 @@ export function QuoteCard({
   currentQuote,
   isLiked,
 }: QuoteCardProps) {
+  const { user } = useUser();
+
   return (
     <Card
       size="lg"
@@ -31,6 +34,7 @@ export function QuoteCard({
           <Button
             variant={"ghost"}
             size="icon"
+            disabled={!user}
             onClick={() =>
               isLiked
                 ? handleUnlikeQuote(currentQuote)

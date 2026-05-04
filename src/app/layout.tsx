@@ -3,6 +3,7 @@ import { QuotesProvider } from "@/app/QuotesContext";
 import { TopNav } from "./NavBar";
 import { ThemeProvider } from "@/app/theme-provider";
 import "./globals.css";
+import { Auth0Provider } from '@auth0/nextjs-auth0/client';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,12 +27,14 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} min-h-full`}
     >
       <body className="min-h-screen w-full">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <QuotesProvider>
-            <TopNav />
-            {children}
-          </QuotesProvider>
-        </ThemeProvider>
+        <Auth0Provider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <QuotesProvider>
+              <TopNav />
+              {children}
+            </QuotesProvider>
+          </ThemeProvider>
+        </Auth0Provider>
       </body>
     </html>
   );
