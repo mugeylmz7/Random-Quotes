@@ -16,7 +16,7 @@ export default function LikedQuotesPage() {
     <main className="min-h-screen p-8" suppressHydrationWarning>
       <section className="max-w-2xl mx-auto">
         <h1
-          className="mb-8 text-center text-3xl font-bold tracking-tight"
+          className="mb-8 text-center text-3xl font-bold tracking-tight blue-950 dark:color-blue-50"
           style={{ color: isDark ? "#ffffff" : "#0f172a" }}
         >
           My Liked Quotes ❤️
