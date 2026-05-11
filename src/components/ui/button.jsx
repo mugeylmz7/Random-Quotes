@@ -10,8 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        outline:
-          "border-border hover:bg-input/50 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-input/30",
+        // Button.js içindeki variants -> variant -> outline kısmını bul ve değiştir:
+        outline: 
+        "border border-border bg-background text-foreground hover:bg-slate-900 hover:text-slate-200 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-100",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:

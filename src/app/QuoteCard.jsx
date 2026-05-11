@@ -12,7 +12,7 @@ export function QuoteCard({
   return (
     <Card
       size="lg"
-      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-lg shadow-sm"
+      className="bg-white border border-slate-200 dark:border-slate-800 p-6 rounded-lg shadow-sm"
     >
       <CardContent className="flex flex-col p-6">
         <div className="flex items-center self-end gap-2 mb-4">
@@ -43,7 +43,9 @@ export function QuoteCard({
         <div className="mt-8">
           <Button
             onClick={handleNextQuote}
-            className="w-full font-bold bg-black text-white"
+            variant="outline"
+            size="lg"
+            className="w-full transition-transform active:scale-95"
           >
             Next Quote
           </Button>
