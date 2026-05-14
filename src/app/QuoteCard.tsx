@@ -3,10 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { H3 } from "@/components/typography/H3";
 import { Quote } from "@/app/QuotesContext";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { Heart } from "lucide-react";
 
 interface QuoteCardProps {
-  currentQuote: Quote;
-  isLiked: boolean;
+  currentQuote: Quote
   handleLikeQuote: (quote: Quote) => void;
   handleUnlikeQuote: (quote: Quote) => void;
   handleNextQuote: () => void;
@@ -17,9 +17,10 @@ export function QuoteCard({
   handleUnlikeQuote,
   handleLikeQuote,
   currentQuote,
-  isLiked,
 }: QuoteCardProps) {
   const { user } = useUser();
+
+  const isLiked = currentQuote.likedBy?.includes(user?.sub as string);
 
   return (
     <Card
@@ -42,7 +43,11 @@ export function QuoteCard({
             }
             className="transition-transform active:scale-125"
           >
-            {isLiked ? "❤️" : "🤍"}
+            {isLiked ? (
+              <Heart className="fill-red-500 text-red-500" /> 
+            ) : (
+              <Heart className="text-slate-400" />
+            )}
           </Button>
         </div>
         <div className="min-h-[120px] flex flex-col justify-center">
@@ -56,7 +61,8 @@ export function QuoteCard({
         <div className="mt-8">
           <Button
             onClick={handleNextQuote}
-            className="w-full font-bold bg-black text-white"
+            variant="default" 
+            className="w-full font-bold"
           >
             Next Quote
           </Button>

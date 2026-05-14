@@ -10,17 +10,13 @@ export default function Home() {
     quoteIndex,
     handleLikeQuote,
     handleUnlikeQuote,
-    likedQuotes,
     handleNextQuote,
   } = useContext(QuotesContext);
 
-  // 1. Veri güvenliği: Eğer quotes henüz yüklenmediyse hata vermesini engelle
+  // Veri güvenliği: Eğer quotes henüz yüklenmediyse hata vermesini engelle
   if (!quotes || quotes.length === 0) return <p>Loading...</p>;
 
   const currentQuote = quotes[quoteIndex];
-
-  // 2. Beğeni durumunu doğrudan objeden oku
-  const isLiked = currentQuote.isLiked;
 
   return (
     <main className="dark:bg-slate-900 min-h-screen flex items-center justify-center p-4">
@@ -29,7 +25,6 @@ export default function Home() {
         handleUnlikeQuote={handleUnlikeQuote}
         handleLikeQuote={handleLikeQuote}
         currentQuote={currentQuote}
-        isLiked={isLiked}
       />
     </main>
   );
