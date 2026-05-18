@@ -23,10 +23,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
+      lang="en" suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} min-h-full`}
     >
-      <body className="min-h-screen w-full">
+      <body className="min-h-screen w-full" suppressHydrationWarning>
         <Auth0Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <QuotesProvider>

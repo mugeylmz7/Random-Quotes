@@ -61,14 +61,9 @@ export function QuoteCard({
         <div className="mt-8">
           <Button
             onClick={handleNextQuote}
-<<<<<<< HEAD:src/app/QuoteCard.tsx
-            variant="default" 
-            className="w-full font-bold"
-=======
             variant="outline"
             size="lg"
             className="w-full transition-transform active:scale-95"
->>>>>>> random-quotes-muge:src/app/QuoteCard.jsx
           >
             Next Quote
           </Button>

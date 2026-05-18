@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 import {
   NavigationMenu,
@@ -35,7 +35,6 @@ export function TopNav() {
     <div className="sticky top-0 z-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 backdrop-blur-md transition-colors flex justify-between items-center px-4 w-full mx-auto">
       <NavigationMenu className="max-w-full mx-auto flex flex-col sm:flex-row justify-center p-4 shadow-sm">
         <NavigationMenuList className="flex-wrap justify-center gap-1 sm:gap-2">
-          
           {/* Süzgeç ve Ekrana Çizme Kısmı */}
           {appRoutes
             .filter((route) => {
@@ -62,32 +61,53 @@ export function TopNav() {
 
           {/* Giriş / Çıkış Butonları */}
           {!!user ? (
-            <NavigationMenuItem className="px-3 py-2">
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <a href="/auth/logout" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
-                  Logout
-                </a>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            <>
+              <NavigationMenuItem className="px-3 py-2">
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link
+                    href={'/user/quotes/new'}
+                    className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors"
+                  >
+                    Add a Quote
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem className="px-3 py-2">
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <a
+                    href="/auth/logout"
+                    className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors"
+                  >
+                    Logout
+                  </a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </>
           ) : (
             <NavigationMenuItem className="px-3 py-2">
               <NavigationMenuLink
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <a href="/auth/login" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+                <a
+                  href="/auth/login"
+                  className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors"
+                >
                   Login
                 </a>
               </NavigationMenuLink>
             </NavigationMenuItem>
           )}
-
         </NavigationMenuList>
       </NavigationMenu>
-      
+
       <div className="py-2 sm:py-4">
         <ThemeToggle />
       </div>
