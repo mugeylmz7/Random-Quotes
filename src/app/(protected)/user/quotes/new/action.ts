@@ -1,26 +1,9 @@
 "use server";
 
 import { auth0 } from "@/lib/auth0";
-import { AddNewQuoteState } from "./page";
+import { AddNewQuoteState, newQuoteSchema } from "@/types/quotes";
 import z from "zod";
-
-const NewQuoteSchema = z.object({
-  author: z
-    .string()
-    .trim()
-    .min(2, "Author must be at least 2 characters long.")
-    .max(
-      100,
-      "Author must be less than 100 characters long.Please provide a valid author name.",
-    ),
-  quote: z
-    .string()
-    .trim()
-    .min(10, "Quote must be at least 10 characters long.").max(
-      1000,
-      "Quote must be less than 1000 characters long. Please provide a valid quote.",
-    ),
-});
+import { ca } from "zod/locales";
 
 export async function addNewQuote(
   currentState: AddNewQuoteState,
@@ -35,31 +18,30 @@ export async function addNewQuote(
     };
   }
 
-// Verileri alıyoruz
+  // Verileri alıyoruz
   const rawData = {
     author: formData.get("author")?.toString() ?? "",
     quote: formData.get("quote")?.toString() ?? "",
+    category: formData.get("category")?.toString() ?? "",
   };
 
-  const validationOutput = NewQuoteSchema.safeParse(rawData);
+  const validationOutput = newQuoteSchema.safeParse(rawData);
 
-    if (!validationOutput.success) {
-    // Zod'un kendi standart hata formatlama metodunu kullanıyoruz
-    const validationErrors = validationOutput.error.flatten().fieldErrors;
-    console.log("validationErrors:", validationErrors);
+  if (!validationOutput.success) {
+    const validationErrors = z.flattenError(validationOutput.error);
+    console.log("validationErrors", validationErrors);
 
     return {
       success: false,
       message: "Validation failed. Please correct the errors and try again.",
-      errors: validationErrors,
+      errors: validationErrors as AddNewQuoteState["errors"],
       data: rawData,
     };
   } else {
-    // Burada veritabanına kaydetme işlemi yapılabilir
-     console.log("Validated data:", validationOutput.data);
+    console.log("Validated data:", validationOutput.data);
     return {
       success: true,
-      message: "Quote added successfully!"
+      message: "Quote added successfully!",
     };
   }
 }
