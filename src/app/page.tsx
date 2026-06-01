@@ -18,7 +18,7 @@ export default function Home() {
   const [filteredIndex, setFilteredIndex] = useState(0);
 
   // Veri güvenliği: Eğer quotes henüz yüklenmediyse hata vermesini engelle
-  if (!quotes || quotes.length === 0) return <p>Loading...</p>;
+  if (!quotes || quotes.length === 0) return <p>Loading...</p>; 
 
   // Sözlerin içinden benzersiz (unique) kategorileri bulup dinamik bir menü hazırlıyoruz
   const categories = [

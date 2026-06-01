@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useActionState } from "react";
+import { useActionState, useEffect, useContext } from "react";
 import { addNewQuote } from "./action";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { QuotesContext } from "@/app/QuotesContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AddNewQuoteState,
@@ -27,6 +28,9 @@ const initialAddNewQuoteState: AddNewQuoteState = {
 };
 
 export default function AddNewQuotePage() {
+  const router = useRouter(); // Yönlendirme motorunu başlatıyoruz, böylece işlem başarılı olduktan sonra kullanıcıyı başka bir sayfaya yönlendirebiliriz.
+  
+  const { fetchData } = useContext(QuotesContext);
   const [state, dispatchAction, isPending] = useActionState(
     addNewQuote,
     initialAddNewQuoteState,
@@ -41,7 +45,16 @@ export default function AddNewQuotePage() {
     resolver: zodResolver(newQuoteSchema),
   });
 
-  if (state.success) return redirect("/user/quotes/new/success");
+  // DÜZELTME: Doğrudan redirect yerine, state.success değişkenini izleyelim ve başarılı olduğunda yönlendirme yapalım. Bu sayede önce Context'i güncelleyip verileri tazeledikten sonra yönlendirme yapabiliriz.
+  useEffect(() => {
+    if (state.success) {
+      // Önce Context'i tazeleyip verileri güncelliyoruz
+      if (fetchData) fetchData(); 
+      
+      // Sonra başarı sayfasına yönlendiriyoruz
+      router.push("/user/quotes/new/success");
+    }
+  }, [state.success, fetchData, router]);
 
   return (
     <main className="min-h-screen flex flex-col items-center mt-20 dark:bg-slate-900">
