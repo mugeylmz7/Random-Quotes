@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldError,
@@ -8,32 +8,35 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { useActionState } from 'react';
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useActionState } from "react";
 import { addNewQuote } from "./action";
 import { quotes } from "@/quotes";
 import { redirect } from "next/navigation";
 
 // Extract the type from the first element or use typeof
-export type Quote = typeof quotes[0];
+export type Quote = (typeof quotes)[0];
 
 export type AddNewQuoteState = {
   success: boolean;
   errors?: any;
   message?: string;
-  data?: Partial<Quote>
-}
+  data?: Partial<Quote>;
+};
 
 const initialAddNewQuoteState: AddNewQuoteState = {
-  success: false
-}
+  success: false,
+};
 
 export default function AddNewQuotePage() {
-  const [state, dispatchAction, isPending] = useActionState(addNewQuote, initialAddNewQuoteState);
+  const [state, dispatchAction, isPending] = useActionState(
+    addNewQuote,
+    initialAddNewQuoteState,
+  );
 
-	  if (state.success) return redirect('/user/quotes/new/success');
+  if (state.success) return redirect("/user/quotes/new/success");
 
   return (
     <main className="min-h-screen flex-col justify-items-center mt-20 dark:bg-slate-900">
@@ -45,20 +48,25 @@ export default function AddNewQuotePage() {
             </FieldLegend>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="author">
-                  Author
-                </FieldLabel>
-                <Input type="text"
-                  name='author'
+                <FieldLabel htmlFor="author">Author</FieldLabel>
+                <Input
+                  type="text"
+                  name="author"
                   id="author"
                   placeholder="Evil Rabbit"
                   required
                   aria-invalid={!!state.errors?.author}
-                  aria-describedby={state.errors?.author ? "author-error" : undefined}
-									defaultValue={state.data?.author}
+                  aria-describedby={
+                    state.errors?.author ? "author-error" : undefined
+                  }
+                  defaultValue={state.data?.author}
                 />
                 {state.errors?.author && (
-                  <div id="author-error" aria-live="polite" className="text-red-500 text-sm mt-1">
+                  <div
+                    id="author-error"
+                    aria-live="polite"
+                    className="text-red-500 text-sm mt-1"
+                  >
                     <FieldError errors={state.errors?.author}>
                       {state.errors?.author}
                     </FieldError>
@@ -67,9 +75,7 @@ export default function AddNewQuotePage() {
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="quote">
-                  Quote
-                </FieldLabel>
+                <FieldLabel htmlFor="quote">Quote</FieldLabel>
                 <Textarea
                   id="quote"
                   name="quote"
@@ -77,11 +83,17 @@ export default function AddNewQuotePage() {
                   placeholder="Add the quote"
                   className="resize-none"
                   aria-invalid={!!state.errors?.quote}
-                  aria-describedby={state.errors?.quote ? "quote-error" : undefined}
-									defaultValue={state.data?.quote}
+                  aria-describedby={
+                    state.errors?.quote ? "quote-error" : undefined
+                  }
+                  defaultValue={state.data?.quote}
                 />
                 {state.errors?.quote && (
-                  <div id="quote-error" aria-live="polite" className="text-red-500 text-sm mt-1">
+                  <div
+                    id="quote-error"
+                    aria-live="polite"
+                    className="text-red-500 text-sm mt-1"
+                  >
                     <FieldError errors={state.errors?.quote}>
                       {state.errors?.quote}
                     </FieldError>
@@ -91,19 +103,31 @@ export default function AddNewQuotePage() {
             </FieldGroup>
           </FieldSet>
 
-
           <Field orientation="horizontal">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? 'Adding...' : 'Create Quote'}
+            <Button
+              type="submit"
+              variant="default"
+              size="lg"
+              disabled={isPending}
+              className="w-full sm:w-auto font-semibold shadow-md bg-blue-600 hover:bg-blue-900 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+            >
+              {isPending ? "Adding..." : "Create Quote"}
             </Button>
-            <Button variant="outline" type="reset">
+            <Button
+              variant="outline"
+              size="lg"
+              type="reset"
+              className="w-full sm:w-auto font-semibold shadow-md bg-gray-200 hover:bg-gray-600 text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500"
+            >
               Clear
             </Button>
           </Field>
         </FieldGroup>
       </form>
       {state?.message && (
-        <p className={`mt-10 text-center ${state.success ? 'text-green-600' : 'text-red-500'}`}>
+        <p
+          className={`mt-10 text-center ${state.success ? "text-green-600" : "text-red-500"}`}
+        >
           {state.message}
         </p>
       )}
