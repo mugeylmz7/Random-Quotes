@@ -10,7 +10,6 @@ export default function Home() {
     quoteIndex,
     handleLikeQuote,
     handleUnlikeQuote,
-    likedQuotes,
     handleNextQuote,
   } = useContext(QuotesContext);
 
