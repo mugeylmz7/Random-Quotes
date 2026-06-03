@@ -2,7 +2,7 @@
   "name": "random-quotes",
   "version": "0.1.0",
   "private": true,
-   "type": "module",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +10,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@auth0/nextjs-auth0": "^4.22.0",
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
     "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

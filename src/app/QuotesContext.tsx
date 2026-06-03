@@ -9,7 +9,6 @@ export interface Quote {
   id: number;
   quote: string;
   author: string;
-  likeCount: number;
   likedBy?: string[]; // Beğenen kullanıcıların ID'lerini tutacak dizi (isteğe bağlı)
 }
 
@@ -61,7 +60,6 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
           ? {
               ...q,
               likedBy: [...(q.likedBy || []), user.sub as string],
-              likeCount: q.likeCount + 1,
             }
           : q,
       ),
@@ -79,7 +77,6 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
         q.id === quote.id
           ? {
               ...q,
-              likeCount: Math.max(0, q.likeCount - 1),
               likedBy: q.likedBy?.filter((id) => id !== user?.sub),
             }
           : q,

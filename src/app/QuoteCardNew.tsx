@@ -30,17 +30,21 @@ export function QuoteCard({
       <CardContent className="flex flex-col p-6">
         <div className="flex items-center self-end gap-2 mb-4">
           <span className="text-sm font-bold text-slate-600">
-            {currentQuote.likeCount}
+            {currentQuote.likedBy?.length || 0} 
           </span>
           <Button
             variant={"ghost"}
             size="icon"
-            disabled={!user}
-            onClick={() =>
+            onClick={() => {
+              // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
+              if (!user) {
+                window.location.href = "/auth/login";
+                return;
+              }
               isLiked
                 ? handleUnlikeQuote(currentQuote)
-                : handleLikeQuote(currentQuote)
-            }
+                : handleLikeQuote(currentQuote);
+            }}
             className="transition-transform active:scale-125"
           >
             {isLiked ? (

@@ -1,8 +1,12 @@
 "use client";
 
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useUser } from "@auth0/nextjs-auth0/client";
 
+=======
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -26,15 +30,20 @@ const appRoutes = [
   },
 ];
 
-export function TopNav() {
+interface TopNavProps {
+  className?: string;
+}
+
+export function TopNav({ className }: TopNavProps) {
+
   const { user, isLoading } = useUser();
-
-  if (isLoading) return null;
-
   return (
-    <div className="sticky top-0 z-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 backdrop-blur-md transition-colors flex justify-between items-center px-4 w-full mx-auto">
-      <NavigationMenu className="max-w-full mx-auto flex flex-col sm:flex-row justify-center p-4 shadow-sm">
+    <div className={`sticky top-0 z-50 w-full bg-background backdrop-blur-md transition-colors flex justify-between items-center px-4 ${className}`}>
+      <NavigationMenu viewport={false}
+        className="my-0 w-full max-w-none flex flex-col sm:flex-row justify-center p-0 shadow-none"
+      >
         <NavigationMenuList className="flex-wrap justify-center gap-1 sm:gap-2">
+<<<<<<< HEAD
           {/* Süzgeç ve Ekrana Çizme Kısmı */}
           {appRoutes
             .filter((route) => {
@@ -45,18 +54,33 @@ export function TopNav() {
             })
             .map(({ name, url }) => (
               <NavigationMenuItem key={name} className="px-3 py-2">
+=======
+          {appRoutes.map(({ name, url }) => (
+            <NavigationMenuItem key={name} className={undefined}>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link href={url} className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+                  {name}
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+            {!isLoading && (
+            user ? (
+              <NavigationMenuItem className={undefined}>
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
                 <NavigationMenuLink
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link
-                    href={url}
-                    className="px-3 py-2 text-sm sm:text-base font-medium"
-                  >
-                    {name}
+                  <Link href="/auth/logout" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+                    Logout
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
+<<<<<<< HEAD
             ))}
 
           {/* Giriş / Çıkış Butonları */}
@@ -91,23 +115,37 @@ export function TopNav() {
               </NavigationMenuItem>
             </>
           ) : (
+=======
+              ) : (
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
             <NavigationMenuItem className="px-3 py-2">
               <NavigationMenuLink
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
+<<<<<<< HEAD
                 <a
                   href="/auth/login"
                   className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors"
                 >
+=======
+                <Link href="/auth/login" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
                   Login
-                </a>
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+<<<<<<< HEAD
           )}
         </NavigationMenuList>
       </NavigationMenu>
 
+=======
+              )
+            )}
+        </NavigationMenuList>
+      </NavigationMenu>
+>>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
       <div className="py-2 sm:py-4">
         <ThemeToggle />
       </div>
