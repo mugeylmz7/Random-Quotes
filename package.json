@@ -2,7 +2,7 @@
   "name": "random-quotes",
   "version": "0.1.0",
   "private": true,
-   "type": "module",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -23,12 +23,15 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
     "autoprefixer": "^10.5.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "postcss": "^8.5.10",
     "shadcn": "^4.4.0",
-    "tailwindcss": "^4.2.3"
+    "tailwindcss": "^4.2.3",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H3 } from "@/components/typography/H3";
+import { Quote } from "@/app/QuotesContext";
+
+interface QuoteCardProps {
+  currentQuote: Quote;
+  isLiked: boolean;
+  handleLikeQuote: (quote: Quote) => void;
+  handleUnlikeQuote: (quote: Quote) => void;
+  handleNextQuote: () => void;
+}
 
 export function QuoteCard({
   handleNextQuote,
@@ -8,7 +17,7 @@ export function QuoteCard({
   handleLikeQuote,
   currentQuote,
   isLiked,
-}) {
+}: QuoteCardProps) {
   return (
     <Card
       size="lg"
