@@ -4,8 +4,8 @@ import * as React from "react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Tick02Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { PhosphorLogoIcon, SunDimIcon } from "@phosphor-icons/react";
+import { MoonIcon } from "@phosphor-icons/react";
 
 function DropdownMenu({ ...props }) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
@@ -92,7 +92,7 @@ function DropdownMenuCheckboxItem({
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+          <PhosphorLogoIcon icon={SunDimIcon} strokeWidth={2} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -125,7 +125,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+          <PhosphorLogoIcon icon={SunDimIcon} strokeWidth={2} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -186,8 +186,8 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
       {...props}
     >
       {children}
-      <HugeiconsIcon
-        icon={ArrowRight01Icon}
+      <PhosphorLogoIcon
+        icon={MoonIcon}
         strokeWidth={2}
         className="ml-auto"
       />
