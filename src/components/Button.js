@@ -1,20 +1,25 @@
-export function Button({variant, children, onClick}) {
-  
-  let buttonStyles = '';
+export function Button({ variant, children, onClick }) {
+  let buttonStyles = "";
 
   switch (variant) {
-    case 'primary':
-      buttonStyles = 'bg-slate-400/90 text-slate-900 hover:bg-blue-500';
+    case "primary":
+      buttonStyles = "bg-slate-400/90 text-slate-900 hover:bg-blue-500";
       break;
-    case 'secondary':
-      buttonStyles = 'bg-gray-200/90 text-slate-800 hover:bg-gray-600';
-      break;  
+    case "secondary":
+      buttonStyles = "bg-gray-200/90 text-slate-800 hover:bg-gray-600";
+      break;
+    case "icon":
+      buttonStyles = "bg-transparent text-slate-900 hover:bg-gray-200";
+      break;
     default:
-      buttonStyles = 'bg-gray-400/90 text-slate-900 hover:bg-gray-400';
+      buttonStyles = "bg-gray-400/90 text-slate-900 hover:bg-gray-400";
   }
 
   return (
-    <button className={`text-md font-semibold py-2 px-4 rounded-md flex gap-2 text-center justify-center ${buttonStyles}`} onClick={onClick}>
+    <button
+      className={`text-md font-semibold py-2 px-4 rounded-md flex gap-2 text-center justify-center ${buttonStyles}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
