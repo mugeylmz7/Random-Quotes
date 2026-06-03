@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H3 } from "@/components/typography/H3";
 import { Quote } from "@/app/QuotesContext";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Heart } from "lucide-react";
 
 interface QuoteCardProps {
-  currentQuote: Quote;
-  isLiked: boolean;
+  currentQuote: Quote
   handleLikeQuote: (quote: Quote) => void;
   handleUnlikeQuote: (quote: Quote) => void;
   handleNextQuote: () => void;
@@ -16,8 +17,11 @@ export function QuoteCard({
   handleUnlikeQuote,
   handleLikeQuote,
   currentQuote,
-  isLiked,
 }: QuoteCardProps) {
+  const { user } = useUser();
+
+  const isLiked = currentQuote.likedBy?.includes(user?.sub as string);
+
   return (
     <Card
       size="lg"
@@ -26,19 +30,28 @@ export function QuoteCard({
       <CardContent className="flex flex-col p-6">
         <div className="flex items-center self-end gap-2 mb-4">
           <span className="text-sm font-bold text-slate-600">
-            {currentQuote.likeCount}
+            {currentQuote.likedBy?.length || 0} 
           </span>
           <Button
             variant={"ghost"}
             size="icon"
-            onClick={() =>
+            onClick={() => {
+              // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
+              if (!user) {
+                window.location.href = "/auth/login";
+                return;
+              }
               isLiked
                 ? handleUnlikeQuote(currentQuote)
-                : handleLikeQuote(currentQuote)
-            }
+                : handleLikeQuote(currentQuote);
+            }}
             className="transition-transform active:scale-125"
           >
-            {isLiked ? "❤️" : "🤍"}
+            {isLiked ? (
+              <Heart className="fill-red-500 text-red-500" /> 
+            ) : (
+              <Heart className="text-slate-400" />
+            )}
           </Button>
         </div>
         <div className="min-h-[120px] flex flex-col justify-center">

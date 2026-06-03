@@ -1,15 +1,15 @@
 "use client";
 
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode, useMemo } from "react";
 import { quotes as initialQuotes } from "@/quotes";
 import { getRandomNumber } from "@/utils/helper-functions";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export interface Quote {
   id: number;
   quote: string;
   author: string;
-  likeCount: number;
-  isLiked?: boolean;
+  likedBy?: string[]; // Beğenen kullanıcıların ID'lerini tutacak dizi (isteğe bağlı)
 }
 
 interface QuotesContextType {
@@ -21,9 +21,9 @@ interface QuotesContextType {
   handleNextQuote: () => void;
 }
 
-
-
-export const QuotesContext = createContext<QuotesContextType>({} as QuotesContextType);
+export const QuotesContext = createContext<QuotesContextType>(
+  {} as QuotesContextType,
+);
 
 interface QuotesProviderProps {
   children: ReactNode;
@@ -31,46 +31,58 @@ interface QuotesProviderProps {
 
 // Depoya verileri koyacak ve dağıtacak Provider (Sağlayıcı) bileşenimiz
 export function QuotesProvider({ children }: QuotesProviderProps) {
+  const { user } = useUser();
+
   // --- VERİLER ---
-  const [quotes, setQuotes] = useState<Quote[]>(initialQuotes); // 1. Sözlerin listesi ve şu an gösterilen sözün indexi için state'ler oluşturuyoruz.
-  const [quoteIndex, setQuoteIndex] = useState<number>(0); // 2. Aktif sözün sırası (Başlangıç değeri 0)
-  const [likedQuotes, setLikedQuotes] = useState<Quote[]>([]); // 3. Beğenilen sözler listesi buraya gelecek
+
+  const [quotes, setQuotes] = useState<Quote[]>(() =>
+    initialQuotes.map((q) => ({ ...q})),
+  );
+
+  const [quoteIndex, setQuoteIndex] = useState<number>(0); // Aktif sözün sırası (Başlangıç değeri 0)
+
+  const likedQuotes = useMemo(() => {
+    return quotes.filter((q) => q.likedBy?.includes(user?.sub as string));
+  }, [quotes, user?.sub]);
+
+
 
   // --- FONKSİYONLAR ---
   function handleLikeQuote(quote: Quote) {
-    // Beğenilen sözü likedQuotes listesine ekliyoruz
-    const isAlreadyLiked = likedQuotes.find((q) => q.id === quote.id);
-
-    if (!isAlreadyLiked) {
-      setLikedQuotes([...likedQuotes, { ...quote, isLiked: true }]);
-
-      // Ana quotes listesindeki likeCount'u artır
-      setQuotes((prevQuotes) =>
-        prevQuotes.map((q) =>
-          // Sadece ID'si eşleşen sözün sayısını artır, diğerlerini olduğu gibi bırak
-          q.id === quote.id
-            ? { ...q, likeCount: q.likeCount + 1, isLiked: true } 
-            : q,
-        ),
-      );
-    }
-  }
-
-
-  function handleUnlikeQuote(quote: Quote) {
-    // 1. Favori listesinden çıkar
-    setLikedQuotes(likedQuotes.filter((q) => q.id !== quote.id));
-
-    // 2. Ana listedeki beğeni sayısını 1 azalt
+    if (!user?.sub) return;
+    
+    const alreadyLikedByCurrentUser = quote.likedBy?.includes(user.sub);
+    if (alreadyLikedByCurrentUser) return;
+    
     setQuotes((prevQuotes) =>
       prevQuotes.map((q) =>
         q.id === quote.id
-          ? { ...q, likeCount: Math.max(0, q.likeCount - 1), isLiked: false } // isLiked'ı false yaptık
+          ? {
+              ...q,
+              likedBy: [...(q.likedBy || []), user.sub as string],
+            }
           : q,
       ),
     );
   }
 
+
+  function handleUnlikeQuote(quote: Quote) {
+
+    if (!user?.sub) return;
+
+    // 2. Ana listedeki beğeni sayısını 1 azalt
+    setQuotes((prevQuotes) =>
+      prevQuotes.map((q) =>
+        q.id === quote.id
+          ? {
+              ...q,
+              likedBy: q.likedBy?.filter((id) => id !== user?.sub),
+            }
+          : q,
+      ),
+    );
+  }
 
   function handleNextQuote() {
     const nextIndex = getRandomNumber(0, quotes.length - 1);

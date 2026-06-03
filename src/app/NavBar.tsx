@@ -1,7 +1,7 @@
 "use client";
 
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -16,10 +16,12 @@ const appRoutes = [
   {
     name: "Home",
     url: "/",
+    protectedPage: false,
   },
   {
     name: "My Liked Quotes",
     url: "/user/quotes/liked",
+    protectedPage: true,
   },
 ];
 
@@ -28,6 +30,8 @@ interface TopNavProps {
 }
 
 export function TopNav({ className }: TopNavProps) {
+
+  const { user, isLoading } = useUser();
   return (
     <div className={`sticky top-0 z-50 w-full bg-background backdrop-blur-md transition-colors flex justify-between items-center px-4 ${className}`}>
       <NavigationMenu viewport={false}
@@ -40,15 +44,37 @@ export function TopNav({ className }: TopNavProps) {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link
-                  href={url}
-                  className="px-3 py-2 text-sm sm:text-base font-medium"
-                >
+                <Link href={url} className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
                   {name}
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
+            {!isLoading && (
+            user ? (
+              <NavigationMenuItem className={undefined}>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/auth/logout" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+                    Logout
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              ) : (
+            <NavigationMenuItem className="px-3 py-2">
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link href="/auth/login" className="text-sm sm:text-base font-medium hover:text-slate-500 transition-colors">
+                  Login
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+              )
+            )}
         </NavigationMenuList>
       </NavigationMenu>
       <div className="py-2 sm:py-4">
