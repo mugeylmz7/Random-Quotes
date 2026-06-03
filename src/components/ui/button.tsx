@@ -1,8 +1,13 @@
 import * as React from "react";
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
-
 import { cn } from "@/lib/utils";
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
 const buttonVariants = cva(
   // Temel class'lardan "text-xs" kısıtlamasını kaldırdık, genel formata uyarladık:
@@ -36,15 +41,11 @@ const buttonVariants = cva(
 
 export function Button({
   className,
-  variant = "default",
-  size = "default",
+  variant,
+  size,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> & { 
-  variant?: "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
-  size?: "default" | "sm" | "lg" | "icon";
-  asChild?: boolean;
-}) {
+}: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button";
 
   return (

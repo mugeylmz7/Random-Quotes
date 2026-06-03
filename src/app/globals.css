@@ -8,10 +8,10 @@
 
 /* Varsayılan (Açık) Tema Renkleri */
 :root {
-  --background: #f1f5f9; /* Slate-100 veya Slate-200 gibi açık bir renk */
+  --background: #f9f9f1; /* Slate-100 veya Slate-200 gibi açık bir renk */
   --foreground: #0f172a; /* Slate-900 */
   --border: #e2e8f0; /* Slate-200 */
-  --input: #f1f5f9;
+  --input: #f9f9f1;
 }
 
 /* Karanlık Tema Renkleri (html etiketinde .dark varsa çalışır) */

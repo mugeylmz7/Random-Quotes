@@ -14,8 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useActionState } from "react";
 import { addNewQuote } from "./action";
 import { redirect } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   AddNewQuoteState,
   NewQuoteInput,
@@ -180,10 +180,21 @@ export default function AddNewQuotePage() {
           </FieldSet>
 
           <Field orientation="horizontal">
-            <Button type="submit" disabled={isPending} className="w-2/3">
+            <Button
+              type="submit"
+              variant="default"
+              size="lg"
+              disabled={isPending}
+              className="w-full sm:w-auto font-semibold shadow-md bg-blue-600 hover:bg-blue-900 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+            >
               {isPending ? "Adding..." : "Create Quote"}
             </Button>
-            <Button variant="outline" type="reset" className="w-1/3">
+            <Button
+              variant="outline"
+              size="lg"
+              type="reset"
+              className="w-full sm:w-auto font-semibold shadow-md bg-gray-200 hover:bg-gray-600 text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500"
+            >
               Clear
             </Button>
           </Field>
