@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { QuotesContext } from "@/app/QuotesContext";
-import { QuoteCard } from "./QuoteCard";
+import { QuoteCard } from "./QuoteCardNew";
 
 export default function Home() {
   const {
