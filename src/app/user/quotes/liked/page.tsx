@@ -16,8 +16,7 @@ export default function LikedQuotesPage() {
     <main className="min-h-screen p-8" suppressHydrationWarning>
       <section className="max-w-2xl mx-auto">
         <h1
-          className="mb-8 text-center text-3xl font-bold tracking-tight"
-          style={{ color: isDark ? "#ffffff" : "#0f172a" }}
+          className="mb-8 text-center text-3xl font-bold tracking-tight dark:text-white"
         >
           My Liked Quotes ❤️
         </h1>
@@ -25,15 +24,10 @@ export default function LikedQuotesPage() {
         <div className="flex flex-col gap-6 w-full mt-4">
           {likedQuotes.length === 0 ? (
             <div
-              className="p-10 rounded-lg text-center shadow-sm border border-dashed"
-              style={{
-                backgroundColor: isDark ? "#1e293b" : "#f1f5f9",
-                borderColor: isDark ? "#334155" : "#cbd5e1",
-              }}
+              className="p-10 rounded-lg text-center shadow-sm border border-dashed bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
             >
               <p
-                style={{ color: isDark ? "#f8fafc" : "#334155" }}
-                className="text-lg italic font-medium"
+                className="text-lg italic font-medium text-gray-700 dark:text-gray-200"
               >
                 You haven't liked any quotes yet. Go back and find some
                 inspiration!
@@ -43,19 +37,16 @@ export default function LikedQuotesPage() {
             likedQuotes.map((quote) => (
               <section
                 key={quote.id}
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl p-4 sm:p-6 shadow-md border-l-4 border-red-400 transition-all"
-                style={{ backgroundColor: isDark ? "#1e293b" : "#ffffff" }}
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl p-4 sm:p-6 shadow-md border-l-4 border-red-400 transition-all bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
               >
                 <div className="flex flex-col flex-1">
                   <p
-                    className="text-lg font-medium italic mb-2"
-                    style={{ color: isDark ? "#ffffff" : "#1e293b" }}
+                    className="text-lg font-medium italic mb-2 text-gray-700 dark:text-gray-200"
                   >
                     "{quote.quote}"
                   </p>
                   <span
-                    className="text-sm font-semibold uppercase tracking-wider"
-                    style={{ color: isDark ? "#e2e8f0" : "#475569" }}
+                    className="text-sm font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-200"
                   >
                     — {quote.author}
                   </span>
@@ -65,12 +56,7 @@ export default function LikedQuotesPage() {
                   <Button
                     variant={"icon"}
                     onClick={() => handleUnlikeQuote(quote)}
-                    className="p-2 rounded-full transition-colors focus:ring-2 focus:ring-red-400 outline-none"
-                    style={{
-                      backgroundColor: isDark
-                        ? "rgba(239, 68, 68, 0.1)"
-                        : "transparent",
-                    }}
+                    className="p-2 rounded-full transition-colors focus:ring-2 focus:ring-red-400 outline-none bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
                     aria-label={`Remove quote by ${quote.author} from favorites`}
                     title="Remove from favorites"
                   >
