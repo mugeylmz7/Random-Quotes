@@ -105,7 +105,7 @@ export default function AddNewQuotePage() {
                 <FieldLabel htmlFor="category">Category</FieldLabel>
                 <select
                   id="category"
-                  className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="mt-2 p-2 block w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors"
                   aria-invalid={!!state.errors?.fieldErrors?.category}
                   aria-describedby={
                     state.errors?.fieldErrors?.category
@@ -115,12 +115,12 @@ export default function AddNewQuotePage() {
                   defaultValue={state.data?.category}
                   {...register("category")}
                 >
-                  <option value="" disabled>
+                  <option value="" disabled className="bg-white text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                     Select a category
                   </option>
                   {/* DİNAMİK KATEGORİ DÖNGÜSÜ */}
                   {allCategories.map((cat) => (
-                    <option key={cat} value={cat}>
+                    <option key={cat} value={cat} className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white">
                       {cat}
                     </option>
                   ))}
