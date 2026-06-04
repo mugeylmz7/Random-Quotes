@@ -3,7 +3,16 @@
 import { createContext, useState, useEffect, ReactNode, useMemo } from "react";
 import { getRandomNumber } from "@/utils/helper-functions";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { Quote } from "@/types/quotes";
+
+export interface Quote {
+  createdBy: string;
+  _id: any;
+  category: string;
+  id: number;
+  quote: string;
+  author: string;
+  likedBy?: string[]; // Beğenen kullanıcıların ID'lerini tutacak dizi (isteğe bağlı)
+}
 
 interface QuotesContextType {
   quotes: Quote[];
@@ -77,7 +86,6 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
           ? {
               ...q,
               likedBy: [...(q.likedBy || []), user.sub as string],
-              likeCount: q.likeCount + 1,
             }
           : q,
       ),
@@ -93,7 +101,6 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
         q.id === quote.id
           ? {
               ...q,
-              likeCount: Math.max(0, q.likeCount - 1),
               likedBy: q.likedBy?.filter((id) => id !== user?.sub),
             }
           : q,
@@ -127,4 +134,3 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
   );
 }
 
-export type { Quote };

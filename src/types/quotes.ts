@@ -1,5 +1,17 @@
 import z from "zod";
 
+// 1. KATEGORİ ENUM YAPISI (Tek Doğruluk Kaynağı)
+export enum Category {
+  Inspirational = 'Inspirational',
+  Motivational = 'Motivational',
+  Life = 'Life',
+  Humor = 'Humor',
+  Wisdom = 'Wisdom'
+}
+
+// 2. Tüm kategorileri otomatik olarak bir diziye (array) çeviriyoruz
+export const allCategories = Object.values(Category);
+
 export const newQuoteSchema = z.object({
   author: z
     .string()
@@ -17,7 +29,9 @@ export const newQuoteSchema = z.object({
       1000,
       "Quote must be less than 1000 characters long. Please provide a valid quote.",
     ),
-  category: z.string().min(1, "Please select a category."),
+  category: z.nativeEnum(Category, {
+    error: () => ({ message: "Please select a valid category" }),
+  }),
 });
 
 export interface NewQuoteInput {

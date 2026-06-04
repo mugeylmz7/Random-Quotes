@@ -78,25 +78,30 @@ export function QuoteCard({
           {/* SAĞ TARAF: Beğenme Butonu */}
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-slate-600">
-              {currentQuote.likeCount}
+            {currentQuote.likedBy?.length || 0} 
             </span>
             <Button
               variant={"ghost"}
               size="icon"
               disabled={!user}
-              onClick={() =>
-                isLiked
-                  ? handleUnlikeQuote(currentQuote)
-                  : handleLikeQuote(currentQuote)
+               onClick={() => {
+              // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
+              if (!user) {
+                window.location.href = "/auth/login";
+                return;
               }
-              className="transition-transform active:scale-125"
-            >
-              {isLiked ? (
-                <Heart className="fill-red-500 text-red-500" />
-              ) : (
-                <Heart className="text-slate-400" />
-              )}
-            </Button>
+              isLiked
+                ? handleUnlikeQuote(currentQuote)
+                : handleLikeQuote(currentQuote);
+            }}
+            className="transition-transform active:scale-125"
+          >
+            {isLiked ? (
+              <Heart className="fill-red-500 text-red-500" /> 
+            ) : (
+              <Heart className="text-slate-400" />
+            )}
+          </Button>
           </div>
         </div>
 
