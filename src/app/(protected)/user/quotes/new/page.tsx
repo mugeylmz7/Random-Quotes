@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Field,
   FieldError,
@@ -8,54 +8,39 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useActionState } from "react";
-import { addNewQuote } from "./action";
-import { redirect } from "next/navigation";
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useActionState } from 'react';
+import { addNewQuote } from './action';
+import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  AddNewQuoteState,
-  NewQuoteInput,
-  newQuoteSchema,
-} from "@/types/quotes";
+import { AddNewQuoteState, allCategories, NewQuoteInput, newQuoteSchema } from '@/types/quotes';
 
 const initialAddNewQuoteState: AddNewQuoteState = {
   success: false,
 };
 
 export default function AddNewQuotePage() {
-  const [state, dispatchAction, isPending] = useActionState(
-    addNewQuote,
-    initialAddNewQuoteState,
-  );
+  const [state, dispatchAction, isPending] = useActionState<
+    AddNewQuoteState,
+    FormData
+  >(addNewQuote, initialAddNewQuoteState);
 
   const {
     register,
-    trigger, // İsteğe bağlı olarak form doğrulamasını manuel tetiklemek için
     formState: { errors: clientSideErrors },
   } = useForm<NewQuoteInput>({
-    mode: "onBlur",
-    resolver: zodResolver(newQuoteSchema),
+    mode: 'onBlur',
+		resolver: zodResolver(newQuoteSchema) as any
   });
 
   if (state.success) return redirect("/user/quotes/new/success");
 
   return (
     <main className="min-h-screen flex flex-col items-center mt-20 dark:bg-slate-900">
-      <form
-        className="w-full max-w-md"
-        action={dispatchAction}
-        onSubmit={async (e) => {
-          // Önce react-hook-form'un kurallarını çalıştır (CLIENT-SIDE VALIDATION)
-          const isValid = await trigger();
-          if (!isValid) {
-            e.preventDefault(); // Hata varsa sunucuya gitmeyi DURDUR
-          }
-        }}
-      >
+      <form className="w-full max-w-md" action={dispatchAction}>
         <FieldGroup>
           <FieldSet>
             <FieldLegend className="text-4xl font-bold dark:text-white flex items-center justify-center mb-4">
@@ -89,7 +74,7 @@ export default function AddNewQuotePage() {
                   </div>
                 )}
 
-                {clientSideErrors.author && (
+                {clientSideErrors.author && !state.errors?.fieldErrors?.author &&(
                   <div className="text-red-500 text-sm mt-1 font-medium">
                     <FieldError errors={clientSideErrors.author.message}>
                       {clientSideErrors.author.message}
@@ -98,12 +83,11 @@ export default function AddNewQuotePage() {
                 )}
               </Field>
 
-              {/* CATEGORY FIELD (ÖDEVDE İSTENEN BONUS) */}
               <Field>
                 <FieldLabel htmlFor="category">Category</FieldLabel>
                 <select
                   id="category"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   aria-invalid={!!state.errors?.fieldErrors?.category}
                   aria-describedby={
                     state.errors?.fieldErrors?.category
@@ -116,11 +100,12 @@ export default function AddNewQuotePage() {
                   <option value="" disabled>
                     Select a category
                   </option>
-                  <option value="Inspirational">Inspirational</option>
-                  <option value="Motivational">Motivational</option>
-                  <option value="Life">Life</option>
-                  <option value="Humor">Humor</option>
-                  <option value="Wisdom">Wisdom</option>
+                  {/* DİNAMİK KATEGORİ DÖNGÜSÜ */}
+                  {allCategories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
                 </select>
                 {state.errors?.fieldErrors?.category && (
                   <div
@@ -133,7 +118,7 @@ export default function AddNewQuotePage() {
                     </FieldError>
                   </div>
                 )}
-                {clientSideErrors.category && (
+                {clientSideErrors.category && !state.errors?.fieldErrors?.category && (
                   <div className="text-red-500 text-sm mt-1 font-medium">
                     <FieldError errors={clientSideErrors.category.message}>
                       {clientSideErrors.category.message}
@@ -168,7 +153,7 @@ export default function AddNewQuotePage() {
                   </div>
                 )}
 
-                {clientSideErrors.quote && (
+                {clientSideErrors.quote && !state.errors?.fieldErrors?.quote && (
                   <div className="text-red-500 text-sm mt-1 font-medium">
                     <FieldError errors={clientSideErrors.quote.message}>
                       {clientSideErrors.quote.message}

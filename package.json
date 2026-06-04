@@ -10,17 +10,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@auth0/nextjs-auth0": "^4.19.0",
-    "@hookform/resolvers": "^5.2.2",
+    "@auth0/nextjs-auth0": "^4.22.0",
+    "@hookform/resolvers": "^5.4.0",
     "@hugeicons/core-free-icons": "^4.1.1",
     "@hugeicons/react": "^1.1.6",
-=======
-<<<<<<< HEAD
-=======
-    "@auth0/nextjs-auth0": "^4.22.0",
->>>>>>> 3d3b1781190c21085f48de7653297c3cd7d19cd5
->>>>>>> feature/create-quote
     "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
