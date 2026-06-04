@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Field,
   FieldError,
@@ -8,38 +8,38 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useActionState } from "react";
-import { addNewQuote } from "./action";
-import { quotes } from "@/quotes";
-import { redirect } from "next/navigation";
-
-// Extract the type from the first element or use typeof
-export type Quote = (typeof quotes)[0];
-
-export type AddNewQuoteState = {
-  success: boolean;
-  errors?: any;
-  message?: string;
-  data?: Partial<Quote>;
-};
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useActionState } from 'react';
+import { addNewQuote } from './action';
+import { redirect } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AddNewQuoteState, allCategories, NewQuoteInput, newQuoteSchema } from '@/types/quotes';
 
 const initialAddNewQuoteState: AddNewQuoteState = {
   success: false,
 };
 
 export default function AddNewQuotePage() {
-  const [state, dispatchAction, isPending] = useActionState(
-    addNewQuote,
-    initialAddNewQuoteState,
-  );
+  const [state, dispatchAction, isPending] = useActionState<
+    AddNewQuoteState,
+    FormData
+  >(addNewQuote, initialAddNewQuoteState);
+
+  const {
+    register,
+    formState: { errors: clientSideErrors },
+  } = useForm<NewQuoteInput>({
+    mode: 'onBlur',
+		resolver: zodResolver(newQuoteSchema) as any
+  });
 
   if (state.success) return redirect("/user/quotes/new/success");
 
   return (
-    <main className="min-h-screen flex-col justify-items-center mt-20 dark:bg-slate-900">
+    <main className="min-h-screen flex flex-col items-center mt-20 dark:bg-slate-900">
       <form className="w-full max-w-md" action={dispatchAction}>
         <FieldGroup>
           <FieldSet>
@@ -51,51 +51,112 @@ export default function AddNewQuotePage() {
                 <FieldLabel htmlFor="author">Author</FieldLabel>
                 <Input
                   type="text"
-                  name="author"
                   id="author"
                   placeholder="Evil Rabbit"
-                  required
-                  aria-invalid={!!state.errors?.author}
+                  aria-invalid={!!state.errors?.fieldErrors?.author}
                   aria-describedby={
-                    state.errors?.author ? "author-error" : undefined
+                    state.errors?.fieldErrors?.author
+                      ? "author-error"
+                      : undefined
                   }
                   defaultValue={state.data?.author}
+                  {...register("author")}
                 />
-                {state.errors?.author && (
+                {state.errors?.fieldErrors?.author && (
                   <div
                     id="author-error"
                     aria-live="polite"
                     className="text-red-500 text-sm mt-1"
                   >
-                    <FieldError errors={state.errors?.author}>
-                      {state.errors?.author}
+                    <FieldError errors={state.errors?.fieldErrors?.author}>
+                      {state.errors?.fieldErrors?.author}
+                    </FieldError>
+                  </div>
+                )}
+
+                {clientSideErrors.author && !state.errors?.fieldErrors?.author &&(
+                  <div className="text-red-500 text-sm mt-1 font-medium">
+                    <FieldError errors={clientSideErrors.author.message}>
+                      {clientSideErrors.author.message}
                     </FieldError>
                   </div>
                 )}
               </Field>
 
               <Field>
+                <FieldLabel htmlFor="category">Category</FieldLabel>
+                <select
+                  id="category"
+                  className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  aria-invalid={!!state.errors?.fieldErrors?.category}
+                  aria-describedby={
+                    state.errors?.fieldErrors?.category
+                      ? "category-error"
+                      : undefined
+                  }
+                  defaultValue={state.data?.category}
+                  {...register("category")}
+                >
+                  <option value="" disabled>
+                    Select a category
+                  </option>
+                  {/* DİNAMİK KATEGORİ DÖNGÜSÜ */}
+                  {allCategories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                {state.errors?.fieldErrors?.category && (
+                  <div
+                    id="category-error"
+                    aria-live="polite"
+                    className="text-red-500 text-sm mt-1"
+                  >
+                    <FieldError errors={state.errors?.fieldErrors?.category}>
+                      {state.errors?.fieldErrors?.category}
+                    </FieldError>
+                  </div>
+                )}
+                {clientSideErrors.category && !state.errors?.fieldErrors?.category && (
+                  <div className="text-red-500 text-sm mt-1 font-medium">
+                    <FieldError errors={clientSideErrors.category.message}>
+                      {clientSideErrors.category.message}
+                    </FieldError>
+                  </div>
+                )}
+              </Field>
+
+              {/* QUOTE FIELD */}
+              <Field>
                 <FieldLabel htmlFor="quote">Quote</FieldLabel>
                 <Textarea
                   id="quote"
-                  name="quote"
-                  required
                   placeholder="Add the quote"
                   className="resize-none"
-                  aria-invalid={!!state.errors?.quote}
+                  aria-invalid={!!state.errors?.fieldErrors?.quote}
                   aria-describedby={
-                    state.errors?.quote ? "quote-error" : undefined
+                    state.errors?.fieldErrors?.quote ? "quote-error" : undefined
                   }
                   defaultValue={state.data?.quote}
+                  {...register("quote")}
                 />
-                {state.errors?.quote && (
+                {state.errors?.fieldErrors?.quote && (
                   <div
                     id="quote-error"
                     aria-live="polite"
                     className="text-red-500 text-sm mt-1"
                   >
-                    <FieldError errors={state.errors?.quote}>
-                      {state.errors?.quote}
+                    <FieldError errors={state.errors?.fieldErrors?.quote}>
+                      {state.errors?.fieldErrors?.quote}
+                    </FieldError>
+                  </div>
+                )}
+
+                {clientSideErrors.quote && !state.errors?.fieldErrors?.quote && (
+                  <div className="text-red-500 text-sm mt-1 font-medium">
+                    <FieldError errors={clientSideErrors.quote.message}>
+                      {clientSideErrors.quote.message}
                     </FieldError>
                   </div>
                 )}

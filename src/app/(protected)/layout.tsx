@@ -3,9 +3,9 @@ import { redirect, RedirectType } from "next/navigation";
 
 export default async function ProtectedLayout({ children }) {
   const session = await auth0.getSession();
-  const { user, error, loading } = session;
-
   if (!session) redirect("/auth/login", RedirectType.replace);
+
+  const { user, error, loading } = await auth0.getSession();
 
   if (loading) {
     return <span>Loading...</span>;

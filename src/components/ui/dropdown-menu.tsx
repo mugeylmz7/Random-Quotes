@@ -4,8 +4,8 @@ import type { ComponentPropsWithoutRef } from "react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { PhosphorLogoIcon, SunDimIcon } from "@phosphor-icons/react";
-import { MoonIcon } from "@phosphor-icons/react";
+import { SunDim } from "@phosphor-icons/react";
+import { Moon } from "@phosphor-icons/react";
 
 type DropdownMenuContentProps = ComponentPropsWithoutRef<
   typeof DropdownMenuPrimitive.Content
@@ -99,7 +99,7 @@ function DropdownMenuCheckboxItem({
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <PhosphorLogoIcon icon={SunDimIcon} strokeWidth={2} />
+          <SunDim />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -133,7 +133,7 @@ function DropdownMenuRadioItem({ className, children, inset, value, ...props }) 
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <PhosphorLogoIcon icon={SunDimIcon} strokeWidth={2} />
+          <SunDim />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -194,11 +194,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
       {...props}
     >
       {children}
-      <PhosphorLogoIcon
-        icon={MoonIcon}
-        strokeWidth={2}
-        className="ml-auto"
-      />
+      <Moon className="ml-auto" />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }
