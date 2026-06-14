@@ -57,12 +57,10 @@ export type AddNewQuoteState = {
 };
 
 export interface Quote {
-  _id?: string; // MongoDB'nin kendi atadığı benzersiz ID (Bunu yeni ekledik)
-  id?: number;  // Eski lokal verilerden kalan ID (Bu da opsiyonel çünkü MongoDB'de kullanmayacağız)
+  _id?: string; // MongoDB'nin kendi atadığı benzersiz ID
   quote: string;
   author: string;
   category?: string;
-  likeCount: number;
   likedBy?: string[];
   createdBy?: string;
   createdAt?: string;

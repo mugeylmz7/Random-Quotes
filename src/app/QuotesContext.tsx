@@ -6,7 +6,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 export interface Quote {
   createdBy: string;
-  _id: any;
+  _id: any; // MongoDB'nin kendi atadığı benzersiz ID
   category: string;
   id: number;
   quote: string;
@@ -82,7 +82,7 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
 
     setQuotes((prevQuotes) =>
       prevQuotes.map((q) =>
-        q.id === quote.id
+        q._id === quote._id
           ? {
               ...q,
               likedBy: [...(q.likedBy || []), user.sub as string],
@@ -98,7 +98,7 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
     // 2. Ana listedeki beğeni sayısını 1 azalt
     setQuotes((prevQuotes) =>
       prevQuotes.map((q) =>
-        q.id === quote.id
+        q._id === quote._id
           ? {
               ...q,
               likedBy: q.likedBy?.filter((id) => id !== user?.sub),

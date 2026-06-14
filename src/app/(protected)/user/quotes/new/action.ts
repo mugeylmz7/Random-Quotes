@@ -58,7 +58,7 @@ export async function addNewQuote(
     }
 
     // Eğer aynı söz yoksa, normal kayıt işlemine devam et
-    const now = new Date();
+    const now = new Date().toISOString();
     const newQuote = {
       quote: validationOutput.data.quote,
       author: validationOutput.data.author,
@@ -66,7 +66,8 @@ export async function addNewQuote(
       createdBy: user.sub,
       createdAt: now,
       updatedAt: now,
-      adminApproved: false,
+      adminApproved: true,
+      likedBy: [],
     };
 
     const newDoc = await col.insertOne(newQuote);

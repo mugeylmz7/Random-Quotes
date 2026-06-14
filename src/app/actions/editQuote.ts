@@ -4,13 +4,9 @@ import { auth0 } from "@/lib/auth0";
 import { Collections, getDb } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { NewQuoteInput } from "@/types/quotes";
 
-export async function editQuote(
-  quoteId: string, 
-  newQuoteText: string, 
-  newAuthor: string, 
-  newCategory: string
-) {
+export async function editQuote(quoteId: string, updatedQuote: NewQuoteInput) {
   const session = await auth0.getSession();
   const user = session?.user;
 
@@ -38,10 +34,10 @@ export async function editQuote(
     { _id: new ObjectId(quoteId) },
     { 
       $set: { 
-        quote: newQuoteText, 
-        author: newAuthor, 
-        category: newCategory,
-        updatedAt: new Date() // Güncellenme tarihini de yeniliyoruz
+        quote: updatedQuote.quote,
+        author: updatedQuote.author,
+        category: updatedQuote.category,
+        updatedAt: new Date().toISOString()
       } 
     }
   );

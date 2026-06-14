@@ -5,7 +5,7 @@ import { Quote, QuotesContext } from "@/app/QuotesContext";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Heart, Pencil, Trash2 } from "lucide-react";
 import { deleteQuote } from "./actions/deleteQuote";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { editQuote } from "./actions/editQuote";
 import { Input } from "@/components/ui/input"; // Shadcn UI Input bileşenin varsa
 import { Textarea } from "@/components/ui/textarea"; // Shadcn UI Textarea bileşenin varsa
@@ -46,7 +46,11 @@ export function QuoteCard({
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      await editQuote(currentQuote._id!.toString(), editedQuote, editedAuthor, editedCategory);
+      await editQuote(currentQuote._id!.toString(), {
+        quote: editedQuote,
+        author: editedAuthor,
+        category: editedCategory
+      });
       await fetchData(); // Verileri yeniden çek
       setIsEditing(false); // Başarılı olursa düzenleme modundan çık
     } catch (error) {
@@ -57,11 +61,11 @@ export function QuoteCard({
   };
 
   // Sıradaki söze geçildiğinde veya söz güncellendiğinde input kutularının içini senkronize edelim:
-  useState(() => {
+  useEffect(() => {
     setEditedQuote(currentQuote.quote);
     setEditedAuthor(currentQuote.author);
     setEditedCategory(currentQuote.category || "");
-  });
+  }, [currentQuote]); // Sıradaki söze geçildiğinde kutuların içini tazelemeyi sağlar
 
   return (
     <Card
