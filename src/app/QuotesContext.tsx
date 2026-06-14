@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useState, useEffect, ReactNode, useMemo } from "react";
-import { quotes as initialQuotes } from "@/quotes";
 import { getRandomNumber } from "@/utils/helper-functions";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export interface Quote {
+  createdBy: string;
+  _id: any;
   category: string;
   id: number;
   quote: string;
@@ -17,9 +18,12 @@ interface QuotesContextType {
   quotes: Quote[];
   quoteIndex: number;
   likedQuotes: Quote[];
+  isLoading: boolean;
+  error: string | null;
   handleLikeQuote: (quote: Quote) => void;
   handleUnlikeQuote: (quote: Quote) => void;
   handleNextQuote: () => void;
+  fetchData: () => Promise<void>;
 }
 
 export const QuotesContext = createContext<QuotesContextType>(
@@ -36,15 +40,38 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
 
   // --- VERİLER ---
 
-  const [quotes, setQuotes] = useState<Quote[]>(() =>
-    initialQuotes.map((q) => ({ ...q })),
-  );
+  const [quotes, setQuotes] = useState<Quote[]>([]) // Sözlerin kendisi
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [quoteIndex, setQuoteIndex] = useState<number>(0); // Aktif sözün sırası (Başlangıç değeri 0)
 
   const likedQuotes = useMemo(() => {
     return quotes.filter((q) => q.likedBy?.includes(user?.sub as string));
   }, [quotes, user?.sub]);
+
+  async function fetchData() {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/quotes");
+      if (!response.ok) {
+        throw new Error("Failed to fetch quotes");
+      }
+      const quotesData = await response.json();
+      setQuotes(quotesData);
+      setQuoteIndex(0); // Yeni veriler geldiğinde ilk söze dön
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch quotes");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    // Sayfa ilk açıldığında bu fonksiyonu çalıştır
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // --- FONKSİYONLAR ---
   function handleLikeQuote(quote: Quote) {
@@ -93,9 +120,12 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
         quotes,
         quoteIndex,
         likedQuotes,
+        isLoading,
+        error,
         handleLikeQuote,
         handleUnlikeQuote,
         handleNextQuote,
+        fetchData
       }}
     >
       {/* children, bu depoyla sarmalayacağımız diğer tüm sayfaları temsil eder */}

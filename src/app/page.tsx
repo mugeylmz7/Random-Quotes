@@ -18,7 +18,7 @@ export default function Home() {
   const [filteredIndex, setFilteredIndex] = useState(0);
 
   // Veri güvenliği: Eğer quotes henüz yüklenmediyse hata vermesini engelle
-  if (!quotes || quotes.length === 0) return <p>Loading...</p>;
+  if (!quotes || quotes.length === 0) return <p>Loading...</p>; 
 
   // Sözlerin içinden benzersiz (unique) kategorileri bulup dinamik bir menü hazırlıyoruz
   const categories = [
@@ -63,8 +63,8 @@ export default function Home() {
               }}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 shadow-sm ${
                 selectedCategory === cat
-                  ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 scale-105"
-                  : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 dark:bg-slate-950 dark:text-slate-400 dark:border-slate-800 dark:hover:bg-slate-800"
+                  ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 scale-105 shadow-md"
+                  : "bg-white text-slate-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 hover:scale-105 hover:shadow-md hover:shadow-blue-100 dark:bg-slate-950 dark:text-slate-400 dark:border-slate-800 dark:hover:bg-blue-950/40 dark:hover:border-blue-500 dark:hover:text-blue-400 dark:hover:shadow-lg dark:hover:shadow-blue-950/50"
               }`}
             >
               {cat}

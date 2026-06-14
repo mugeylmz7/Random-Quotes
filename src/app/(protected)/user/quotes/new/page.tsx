@@ -8,25 +8,34 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useActionState } from 'react';
-import { addNewQuote } from './action';
-import { redirect } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { AddNewQuoteState, allCategories, NewQuoteInput, newQuoteSchema } from '@/types/quotes';
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useActionState, useEffect, useContext } from "react";
+import { addNewQuote } from "./action";
+import { redirect, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { QuotesContext } from "@/app/QuotesContext";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  AddNewQuoteState,
+  allCategories,
+  NewQuoteInput,
+  newQuoteSchema,
+} from "@/types/quotes";
 
 const initialAddNewQuoteState: AddNewQuoteState = {
   success: false,
 };
 
 export default function AddNewQuotePage() {
-  const [state, dispatchAction, isPending] = useActionState<
-    AddNewQuoteState,
-    FormData
-  >(addNewQuote, initialAddNewQuoteState);
+  const router = useRouter(); // Yönlendirme motorunu başlatıyoruz, böylece işlem başarılı olduktan sonra kullanıcıyı başka bir sayfaya yönlendirebiliriz.
+  
+  const { fetchData } = useContext(QuotesContext);
+  const [state, dispatchAction, isPending] = useActionState(
+    addNewQuote,
+    initialAddNewQuoteState,
+  );
 
   const {
     register,
@@ -36,7 +45,16 @@ export default function AddNewQuotePage() {
 		resolver: zodResolver(newQuoteSchema) as any
   });
 
-  if (state.success) return redirect("/user/quotes/new/success");
+  // DÜZELTME: Doğrudan redirect yerine, state.success değişkenini izleyelim ve başarılı olduğunda yönlendirme yapalım. Bu sayede önce Context'i güncelleyip verileri tazeledikten sonra yönlendirme yapabiliriz.
+  useEffect(() => {
+    if (state.success) {
+      // Önce Context'i tazeleyip verileri güncelliyoruz
+      if (fetchData) fetchData(); 
+      
+      // Sonra başarı sayfasına yönlendiriyoruz
+      router.push("/user/quotes/new/success");
+    }
+  }, [state.success, fetchData, router]);
 
   return (
     <main className="min-h-screen flex flex-col items-center mt-20 dark:bg-slate-900">
@@ -87,7 +105,7 @@ export default function AddNewQuotePage() {
                 <FieldLabel htmlFor="category">Category</FieldLabel>
                 <select
                   id="category"
-                  className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="mt-2 p-2 block w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors"
                   aria-invalid={!!state.errors?.fieldErrors?.category}
                   aria-describedby={
                     state.errors?.fieldErrors?.category
@@ -97,12 +115,12 @@ export default function AddNewQuotePage() {
                   defaultValue={state.data?.category}
                   {...register("category")}
                 >
-                  <option value="" disabled>
+                  <option value="" disabled className="bg-white text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                     Select a category
                   </option>
                   {/* DİNAMİK KATEGORİ DÖNGÜSÜ */}
                   {allCategories.map((cat) => (
-                    <option key={cat} value={cat}>
+                    <option key={cat} value={cat} className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white">
                       {cat}
                     </option>
                   ))}
