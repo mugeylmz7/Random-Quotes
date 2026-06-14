@@ -1,11 +1,18 @@
 "use client";
 
-import * as React from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Tick02Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { SunDim } from "@phosphor-icons/react";
+import { Moon } from "@phosphor-icons/react";
+
+type DropdownMenuContentProps = ComponentPropsWithoutRef<
+  typeof DropdownMenuPrimitive.Content
+>;
+type DropdownMenuRadioItemProps = ComponentPropsWithoutRef<
+  typeof DropdownMenuPrimitive.RadioItem
+>;
 
 function DropdownMenu({ ...props }) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
@@ -31,7 +38,7 @@ function DropdownMenuContent({
   align = "start",
   sideOffset = 4,
   ...props
-}) {
+}: DropdownMenuContentProps) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -92,7 +99,7 @@ function DropdownMenuCheckboxItem({
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+          <SunDim />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -109,7 +116,7 @@ function DropdownMenuRadioGroup({ ...props }) {
   );
 }
 
-function DropdownMenuRadioItem({ className, children, inset, ...props }) {
+function DropdownMenuRadioItem({ className, children, inset, value, ...props }) {
   return (
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
@@ -118,6 +125,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
         "relative flex min-h-7 cursor-default items-center gap-2 rounded-md py-1.5 pr-8 pl-2 text-xs outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7.5 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
+      value={value}
       {...props}
     >
       <span
@@ -125,7 +133,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <DropdownMenuPrimitive.ItemIndicator>
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+          <SunDim />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -186,11 +194,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
       {...props}
     >
       {children}
-      <HugeiconsIcon
-        icon={ArrowRight01Icon}
-        strokeWidth={2}
-        className="ml-auto"
-      />
+      <Moon className="ml-auto" />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }

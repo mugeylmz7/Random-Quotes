@@ -3,26 +3,32 @@
 import { useContext } from "react";
 import { QuotesContext } from "@/app/QuotesContext";
 import { Button } from "@/components/Button";
-import { useTheme } from "next-themes"; // Temayı çekmek için ekledik
+import { useTheme } from "next-themes";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function LikedQuotesPage() {
   const { likedQuotes, handleUnlikeQuote } = useContext(QuotesContext);
   const { theme, resolvedTheme } = useTheme();
+  const { user } = useUser();
 
   // Mevcut temanın karanlık olup olmadığını net olarak anlıyoruz
   const isDark = theme === "dark" || resolvedTheme === "dark";
+
+  const myLikedQuotes = likedQuotes.filter((quote) =>
+    quote.likedBy?.includes(user?.sub),
+  );
 
   return (
     <main className="min-h-screen p-8" suppressHydrationWarning>
       <section className="max-w-2xl mx-auto">
         <h1
-          className="mb-8 text-center text-3xl font-bold tracking-tight dark:text-white"
+          className="mb-8 text-center text-3xl font-bold tracking-tight blue-950 dark:color-blue-50"
         >
           My Liked Quotes ❤️
         </h1>
 
         <div className="flex flex-col gap-6 w-full mt-4">
-          {likedQuotes.length === 0 ? (
+          {myLikedQuotes.length === 0 ? (
             <div
               className="p-10 rounded-lg text-center shadow-sm border border-dashed bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
             >
@@ -34,7 +40,7 @@ export default function LikedQuotesPage() {
               </p>
             </div>
           ) : (
-            likedQuotes.map((quote) => (
+            myLikedQuotes.map((quote) => (
               <section
                 key={quote.id}
                 className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl p-4 sm:p-6 shadow-md border-l-4 border-red-400 transition-all bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
