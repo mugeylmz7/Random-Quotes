@@ -19,22 +19,16 @@ export default function LikedQuotesPage() {
   );
 
   return (
-    <main className="min-h-screen p-8" suppressHydrationWarning>
+    <main className="min-h-[calc(100vh-5.5rem)] p-8" suppressHydrationWarning>
       <section className="max-w-2xl mx-auto">
-        <h1
-          className="mb-8 text-center text-3xl font-bold tracking-tight blue-950 dark:color-blue-50"
-        >
+        <h1 className="mb-8 text-center text-3xl font-bold tracking-tight blue-950 dark:color-blue-50">
           My Liked Quotes ❤️
         </h1>
 
         <div className="flex flex-col gap-6 w-full mt-4">
           {myLikedQuotes.length === 0 ? (
-            <div
-              className="p-10 rounded-lg text-center shadow-sm border border-dashed bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
-            >
-              <p
-                className="text-lg italic font-medium text-gray-700 dark:text-gray-200"
-              >
+            <div className="p-10 rounded-lg text-center shadow-sm border border-dashed bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300">
+              <p className="text-lg italic font-medium text-gray-700 dark:text-gray-200">
                 You haven't liked any quotes yet. Go back and find some
                 inspiration!
               </p>
@@ -46,14 +40,10 @@ export default function LikedQuotesPage() {
                 className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl p-4 sm:p-6 shadow-md border-l-4 border-red-400 transition-all bg-white dark:bg-slate-900 border-slate-700 dark:border-slate-300"
               >
                 <div className="flex flex-col flex-1">
-                  <p
-                    className="text-lg font-medium italic mb-2 text-gray-700 dark:text-gray-200"
-                  >
+                  <p className="text-lg font-medium italic mb-2 text-gray-700 dark:text-gray-200">
                     "{quote.quote}"
                   </p>
-                  <span
-                    className="text-sm font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-200"
-                  >
+                  <span className="text-sm font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-200">
                     — {quote.author}
                   </span>
                 </div>

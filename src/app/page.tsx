@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { QuotesContext } from "@/app/QuotesContext";
 import { QuoteCard } from "./QuoteCardNew";
 
@@ -11,14 +11,20 @@ export default function Home() {
     handleLikeQuote,
     handleUnlikeQuote,
     handleNextQuote,
+    fetchData,
   } = useContext(QuotesContext);
 
   // Kategori seçimi ve filtrelenmiş liste için kendi yerel state'lerimiz
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredIndex, setFilteredIndex] = useState(0);
 
+  // Veri Güvenliği: Ana sayfa her ekrana geldiğinde verileri sessizce günceller
+  useEffect(() => {
+    if (fetchData) fetchData();
+  }, []);
+
   // Veri güvenliği: Eğer quotes henüz yüklenmediyse hata vermesini engelle
-  if (!quotes || quotes.length === 0) return <p>Loading...</p>; 
+  if (!quotes || quotes.length === 0) return <p>No quotes available.</p>;
 
   // Sözlerin içinden benzersiz (unique) kategorileri bulup dinamik bir menü hazırlıyoruz
   const categories = [
@@ -49,8 +55,8 @@ export default function Home() {
   };
 
   return (
-    <main className="dark:bg-slate-900 min-h-screen flex items-center justify-center p-4">
-      {/* SİHİRLİ DÜZELTME: Hem Kategorileri hem de Kartı tek bir dikey kapsayıcı div'e alıyoruz */}
+    <main className="dark:bg-slate-900 min-h-[calc(100vh-5.5rem)] flex items-center justify-center p-4">
+      {/* DÜZELTME: Hem Kategorileri hem de Kartı tek bir dikey kapsayıcı div'e alıyoruz */}
       <div className="w-full max-w-2xl mx-auto space-y-8 flex flex-col items-center">
         {/* KATEGORİ FİLTRE BUTONLARI */}
         <div className="flex flex-wrap gap-2 justify-center w-full">
@@ -75,6 +81,7 @@ export default function Home() {
         {/* SÖZ KARTI VEYA BOŞ DURUM UYARISI */}
         {filteredQuotes.length > 0 ? (
           <QuoteCard
+            key={currentQuote._id}
             handleNextQuote={onNextClick}
             handleUnlikeQuote={handleUnlikeQuote}
             handleLikeQuote={handleLikeQuote}

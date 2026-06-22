@@ -2,11 +2,11 @@ import z from "zod";
 
 // 1. KATEGORİ ENUM YAPISI (Tek Doğruluk Kaynağı)
 export enum Category {
-  Inspirational = 'Inspirational',
-  Motivational = 'Motivational',
-  Life = 'Life',
-  Humor = 'Humor',
-  Wisdom = 'Wisdom'
+  Inspirational = "Inspirational",
+  Motivational = "Motivational",
+  Life = "Life",
+  Humor = "Humor",
+  Wisdom = "Wisdom",
 }
 
 // 2. Tüm kategorileri otomatik olarak bir diziye (array) çeviriyoruz
@@ -57,12 +57,10 @@ export type AddNewQuoteState = {
 };
 
 export interface Quote {
-  _id?: string; // MongoDB'nin kendi atadığı benzersiz ID (Bunu yeni ekledik)
-  id?: number;  // Eski lokal verilerden kalan ID (Bu da opsiyonel çünkü MongoDB'de kullanmayacağız)
+  _id?: string; // MongoDB'nin kendi atadığı benzersiz ID
   quote: string;
   author: string;
   category?: string;
-  likeCount: number;
   likedBy?: string[];
   createdBy?: string;
   createdAt?: string;
