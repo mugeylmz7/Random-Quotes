@@ -8,8 +8,15 @@ interface ButtonProps {
   "aria-label"?: string; // Tireli olduğu için tırnak içinde
 }
 
-
-export function Button({ variant, children, onClick, className, style, title, "aria-label": ariaLabel }: ButtonProps) {
+export function Button({
+  variant,
+  children,
+  onClick,
+  className,
+  style,
+  title,
+  "aria-label": ariaLabel,
+}: ButtonProps) {
   let buttonStyles = "";
 
   switch (variant) {

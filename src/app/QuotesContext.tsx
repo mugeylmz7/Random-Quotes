@@ -40,7 +40,7 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
 
   // --- VERİLER ---
 
-  const [quotes, setQuotes] = useState<Quote[]>([]) // Sözlerin kendisi
+  const [quotes, setQuotes] = useState<Quote[]>([]); // Sözlerin kendisi
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -125,7 +125,7 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
         handleLikeQuote,
         handleUnlikeQuote,
         handleNextQuote,
-        fetchData
+        fetchData,
       }}
     >
       {/* children, bu depoyla sarmalayacağımız diğer tüm sayfaları temsil eder */}
@@ -133,4 +133,3 @@ export function QuotesProvider({ children }: QuotesProviderProps) {
     </QuotesContext.Provider>
   );
 }
-

@@ -55,7 +55,7 @@ export default function Home() {
   };
 
   return (
-    <main className="dark:bg-slate-900 min-h-screen flex items-center justify-center p-4">
+    <main className="dark:bg-slate-900 min-h-[calc(100vh-5.5rem)] flex items-center justify-center p-4">
       {/* DÜZELTME: Hem Kategorileri hem de Kartı tek bir dikey kapsayıcı div'e alıyoruz */}
       <div className="w-full max-w-2xl mx-auto space-y-8 flex flex-col items-center">
         {/* KATEGORİ FİLTRE BUTONLARI */}

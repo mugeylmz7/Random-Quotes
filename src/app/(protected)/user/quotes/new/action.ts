@@ -1,12 +1,11 @@
 "use server";
 
 import { auth0 } from "@/lib/auth0";
-import { Collections, getDb} from "@/lib/db";
+import { Collections, getDb } from "@/lib/db";
 import { quotes } from "@/quotes";
 import { AddNewQuoteState, newQuoteSchema } from "@/types/quotes";
 import z from "zod";
 import { revalidatePath } from "next/cache";
-
 
 export async function addNewQuote(
   currentState: AddNewQuoteState,
@@ -14,7 +13,7 @@ export async function addNewQuote(
 ): Promise<AddNewQuoteState> {
   const session = await auth0.getSession();
   const user = session?.user;
-  console.log('user', user);
+  console.log("user", user);
 
   if (!session || !user) {
     return {
@@ -47,13 +46,16 @@ export async function addNewQuote(
     const col = db.collection(Collections.Quotes);
     // --- GÜVENLİK KONTROLÜ ---
     // Kullanıcının yazdığı sözü (büyük/küçük harf duyarlılığıyla) veritabanında arıyoruz
-    const existingQuote = await col.findOne({ quote: validationOutput.data.quote });
+    const existingQuote = await col.findOne({
+      quote: validationOutput.data.quote,
+    });
 
     // Eğer existingQuote dolu dönerse (yani aynısından varsa) işlemi durdur ve hata mesajı yolla
     if (existingQuote) {
       return {
         success: false,
-        message: "This quote already exists in the database. Please add a different one.",
+        message:
+          "This quote already exists in the database. Please add a different one.",
       };
     }
 
@@ -74,14 +76,11 @@ export async function addNewQuote(
     console.log("Inserted quote with ID:", newDoc.insertedId);
 
     // Ana sayfanın arka plan önbelleğini temizle
-    revalidatePath("/"); 
+    revalidatePath("/");
 
     return {
       success: true,
       message: "Quote added successfully!",
     };
-
   }
 }
-
-

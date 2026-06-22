@@ -32,18 +32,18 @@ export async function editQuote(quoteId: string, updatedQuote: NewQuoteInput) {
   // 3. Her şey güvenliyse veritabanındaki verileri güncelle
   await col.updateOne(
     { _id: new ObjectId(quoteId) },
-    { 
-      $set: { 
+    {
+      $set: {
         quote: updatedQuote.quote,
         author: updatedQuote.author,
         category: updatedQuote.category,
-        updatedAt: new Date().toISOString()
-      } 
-    }
+        updatedAt: new Date().toISOString(),
+      },
+    },
   );
 
   // 4. Ana sayfayı yenile ki yeni veriler anında ekrana yansısın
   revalidatePath("/");
-  
+
   return { success: true };
 }

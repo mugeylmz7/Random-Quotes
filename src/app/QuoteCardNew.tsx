@@ -9,7 +9,7 @@ import { useState, useContext, useEffect } from "react";
 import { editQuote } from "./actions/editQuote";
 import { Input } from "@/components/ui/input"; // Shadcn UI Input bileşenin varsa
 import { Textarea } from "@/components/ui/textarea"; // Shadcn UI Textarea bileşenin varsa
-
+import { motion } from "framer-motion";
 
 interface QuoteCardProps {
   currentQuote: Quote;
@@ -31,25 +31,26 @@ export function QuoteCard({
   const isOwner =
     user?.sub && currentQuote.createdBy && user.sub === currentQuote.createdBy;
 
-
-    // --- Düzenleme durumu (state) ---
+  // --- Düzenleme durumu (state) ---
   const [isEditing, setIsEditing] = useState(false);
   const [editedQuote, setEditedQuote] = useState(currentQuote.quote);
   const [editedAuthor, setEditedAuthor] = useState(currentQuote.author);
-  const [editedCategory, setEditedCategory] = useState(currentQuote.category || "");
+  const [editedCategory, setEditedCategory] = useState(
+    currentQuote.category || "",
+  );
   const [isSaving, setIsSaving] = useState(false);
 
   // Context'ten yeni yaptığımız yenileme fonksiyonunu çekiyoruz:
   const { fetchData } = useContext(QuotesContext);
-  
-// Kaydetme Fonksiyonu
+
+  // Kaydetme Fonksiyonu
   const handleSave = async () => {
     try {
       setIsSaving(true);
       await editQuote(currentQuote._id!.toString(), {
         quote: editedQuote,
         author: editedAuthor,
-        category: editedCategory
+        category: editedCategory,
       });
       await fetchData(); // Verileri yeniden çek
       setIsEditing(false); // Başarılı olursa düzenleme modundan çık
@@ -70,7 +71,7 @@ export function QuoteCard({
   return (
     <Card
       size="lg"
-      className="bg-white border border-slate-200 dark:border-slate-800 p-6 rounded-lg shadow-sm"
+      className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 p-6 rounded-lg shadow-sm"
     >
       <CardContent className="flex flex-col p-6">
         <div className="flex items-center justify-between w-full mb-4">
@@ -82,54 +83,66 @@ export function QuoteCard({
           {/* SAĞ TARAF: Beğenme Butonu */}
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-slate-600">
-            {currentQuote.likedBy?.length || 0} 
+              {currentQuote.likedBy?.length || 0}
             </span>
             <Button
-              variant={"ghost"}
+              variant={"icon"}
               size="icon"
               disabled={!user}
-               onClick={() => {
-              // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
-              if (!user) {
-                window.location.href = "/auth/login";
-                return;
-              }
-              isLiked
-                ? handleUnlikeQuote(currentQuote)
-                : handleLikeQuote(currentQuote);
-            }}
-            className="transition-transform active:scale-125"
-          >
-            {isLiked ? (
-              <Heart className="fill-red-500 text-red-500" /> 
-            ) : (
-              <Heart className="text-slate-400" />
-            )}
-          </Button>
+              onClick={() => {
+                // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
+                if (!user) {
+                  window.location.href = "/auth/login";
+                  return;
+                }
+                isLiked
+                  ? handleUnlikeQuote(currentQuote)
+                  : handleLikeQuote(currentQuote);
+              }}
+              className="transition-transform active:scale-125"
+            >
+              {isLiked ? (
+                // EĞER BEĞENİLDİYSE: Üzerine gelince "Kırık Kalp" çıksın
+                <Heart className="fill-red-500 text-red-500" />
+              ) : (
+                <Heart className="text-slate-400" />
+              )}
+            </Button>
           </div>
         </div>
 
         {/* ORTA KISIM: Söz ve Yazar */}
-        <div className="min-h-[120px] flex flex-col justify-center gap-4 mt-4">
+        <motion.div
+          key={currentQuote._id?.toString() || currentQuote.quote} // Söz değiştiğinde animasyon tetiklenir
+          initial={{ opacity: 0, y: 20 }} // İlk başta görünmez ve 20px aşağıda başlasın
+          animate={{ opacity: 1, y: 0 }} // Animasyonu tetikle
+          transition={{ duration: 0.5, ease: "easeOut" }} // Animasyon süresi: 0.5 saniyede akıcı kaysın
+          className="flex flex-col items-center justify-center w-full"
+        >
           {isEditing ? (
             // DÜZENLEME MODU AÇIKKEN GÖRÜNECEK FORMLAR
-            <div className="space-y-3">
-              <input 
-                className="w-full p-2 border rounded-md dark:bg-slate-900" 
-                value={editedCategory} 
-                onChange={(e) => setEditedCategory(e.target.value)} 
-                placeholder="Category"
-              />
-              <textarea 
-                className="w-full p-2 border rounded-md dark:bg-slate-900 min-h-[100px]" 
-                value={editedQuote} 
-                onChange={(e) => setEditedQuote(e.target.value)} 
+            <div className="space-y-4">
+              <select
+                className="w-full p-2 border rounded-md dark:bg-slate-900 dark:border-slate-700 p-2 mb-4"
+                value={editedCategory}
+                onChange={(e) => setEditedCategory(e.target.value)}
+              >
+                <option value="Humor">Humor</option>
+                <option value="Life">Life</option>
+                <option value="Inspirational">Inspirational</option>
+                <option value="Motivational">Motivational</option>
+                <option value="Wisdom">Wisdom</option>
+              </select>
+              <textarea
+                className="w-full p-2 border rounded-md dark:bg-slate-900 min-h-[100px] mb-4"
+                value={editedQuote}
+                onChange={(e) => setEditedQuote(e.target.value)}
                 placeholder="Quote text"
               />
-              <input 
-                className="w-full p-2 border rounded-md dark:bg-slate-900" 
-                value={editedAuthor} 
-                onChange={(e) => setEditedAuthor(e.target.value)} 
+              <input
+                className="w-full p-2 border rounded-md dark:bg-slate-900"
+                value={editedAuthor}
+                onChange={(e) => setEditedAuthor(e.target.value)}
                 placeholder="Author"
               />
             </div>
@@ -144,7 +157,7 @@ export function QuoteCard({
               </span>
             </>
           )}
-        </div>
+        </motion.div>
 
         {/* ALT KISIM: Butonlar */}
         <div className="mt-8 space-y-3">
@@ -153,7 +166,7 @@ export function QuoteCard({
             onClick={handleNextQuote}
             variant="outline"
             size="lg"
-            className="w-full transition-transform active:scale-95"
+            className="w-full"
             disabled={isEditing} // Düzenleme yaparken yanlışlıkla sıradaki söze geçilmesin
           >
             Next Quote
@@ -165,15 +178,15 @@ export function QuoteCard({
               {isEditing ? (
                 // Eğer isEditing TRUE ise: Kaydet ve İptal butonları yan yana çıkar
                 <div className="flex w-full gap-2">
-                  <Button 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  <Button
+                    className="w-full bg-green-600 hover:bg-green-700 text-black"
                     onClick={handleSave}
                     disabled={isSaving}
                   >
                     {isSaving ? "Saving..." : "Save"}
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full"
                     onClick={() => {
                       setIsEditing(false); // Düzenlemeyi iptal et modu kapat
@@ -188,9 +201,9 @@ export function QuoteCard({
                 </div>
               ) : (
                 // Eğer isEditing FALSE ise: düzenlemek istediğin normal EDIT butonu çıksın
-                <Button 
-                  variant="outline" 
-                  className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
+                <Button
+                  variant="secondary"
+                  className="w-full"
                   onClick={() => setIsEditing(true)} // Butona basılınca isEditing TRUE olur ve üstteki form açılır!
                 >
                   <Pencil className="w-4 h-4 mr-2" />
@@ -200,11 +213,15 @@ export function QuoteCard({
 
               {/* DELETE (SİLME) BUTONU (Düzenleme yaparken gizlensin diye şart koyduk) */}
               {!isEditing && (
-                <Button 
-                  variant="outline" 
-                  className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                <Button
+                  variant="destructive"
+                  className="w-full"
                   onClick={async () => {
-                    if (window.confirm("Are you sure you want to delete this quote?")) {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this quote?",
+                      )
+                    ) {
                       try {
                         await deleteQuote(currentQuote._id!.toString());
                         handleNextQuote();

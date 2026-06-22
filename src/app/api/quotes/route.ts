@@ -10,6 +10,5 @@ export async function GET() {
   const query = { adminApproved: true }; // Sadece admin tarafından onaylanmış sözleri çekiyoruz
   const quotes = await col.find(query).toArray();
 
-
   return NextResponse.json(quotes);
 }

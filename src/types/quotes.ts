@@ -2,11 +2,11 @@ import z from "zod";
 
 // 1. KATEGORİ ENUM YAPISI (Tek Doğruluk Kaynağı)
 export enum Category {
-  Inspirational = 'Inspirational',
-  Motivational = 'Motivational',
-  Life = 'Life',
-  Humor = 'Humor',
-  Wisdom = 'Wisdom'
+  Inspirational = "Inspirational",
+  Motivational = "Motivational",
+  Life = "Life",
+  Humor = "Humor",
+  Wisdom = "Wisdom",
 }
 
 // 2. Tüm kategorileri otomatik olarak bir diziye (array) çeviriyoruz

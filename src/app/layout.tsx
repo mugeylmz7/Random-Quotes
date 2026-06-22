@@ -3,7 +3,7 @@ import { QuotesProvider } from "@/app/QuotesContext";
 import { TopNav } from "./NavBar";
 import { ThemeProvider } from "@/app/theme-provider";
 import "./globals.css";
-import { Auth0Provider } from '@auth0/nextjs-auth0/client';
+import { Auth0Provider } from "@auth0/nextjs-auth0/client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +23,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en" suppressHydrationWarning
+      lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} min-h-full`}
     >
       <body className="min-h-screen w-full" suppressHydrationWarning>
