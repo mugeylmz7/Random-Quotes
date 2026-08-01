@@ -36,7 +36,7 @@ function DropdownMenuTrigger({ ...props }) {
 function DropdownMenuContent({
   className,
   align = "start",
-  sideOffset = 4,
+  sideOffset = 22,
   ...props
 }: DropdownMenuContentProps) {
   return (
