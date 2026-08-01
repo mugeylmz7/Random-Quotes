@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { QuotesProvider } from "@/app/QuotesContext";
-import { TopNav } from "./NavBar";
-import { ThemeProvider } from "@/app/theme-provider";
+import { QuotesProvider } from "@/components/QuotesContext";
+import { TopNav } from "../components/NavBar";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Auth0Provider } from "@auth0/nextjs-auth0/client";
 

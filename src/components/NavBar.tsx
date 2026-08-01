@@ -39,8 +39,8 @@ export function TopNav({ className }: TopNavProps) {
   const { user, isLoading } = useUser();
   return (
     <div
-      className={`sticky top-0 z-50 w-full bg-background backdrop-blur-md transition-colors flex justify-between items-center px-4 ${className}`}
-    >
+      className={`sticky top-0 z-50 w-full bg-background/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/80 transition-colors flex justify-between items-center px-4 ${className}`}
+>
       <NavigationMenu
         viewport={false}
         className="my-0 w-full max-w-none flex flex-col sm:flex-row justify-center p-0 shadow-none"

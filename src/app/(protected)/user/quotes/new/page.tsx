@@ -15,7 +15,7 @@ import { useActionState, useEffect } from "react";
 import { addNewQuote } from "./action";
 import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { QuotesContext } from "@/app/QuotesContext";
+import { QuotesContext } from "@/components/QuotesContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AddNewQuoteState,
@@ -44,7 +44,7 @@ export default function AddNewQuotePage() {
     resolver: zodResolver(newQuoteSchema) as any,
   });
 
-  // 🛠️ SADELEŞTİRİLEN KISIM: Context'i aradan çıkardık.
+
   // Sadece işlem başarıyla tamamlandığında direkt yönlendirme yapıyoruz.
   useEffect(() => {
     if (state.success) {
@@ -53,7 +53,7 @@ export default function AddNewQuotePage() {
   }, [state.success, router]);
 
   return (
-    <main className="min-h-[calc(100vh-5.5rem)] flex justify-center items-start py-20 px-4 dark:bg-slate-950">
+    <main className="min-h-[calc(100vh-5.5rem)] flex justify-center items-start py-20 px-4 bg-background text-foreground transition-colors">
       <div className="w-full sm:max-w-md max-w-lg dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-8 rounded-2xl shadow-xl transition-colors">
         <h1 className="text-3xl font-bold mb-8 text-center">Add a New Quote</h1>
         <form
@@ -77,6 +77,7 @@ export default function AddNewQuotePage() {
                     }
                     defaultValue={state.data?.author}
                     {...register("author")}
+                    className="bg-background text-foreground border border-input focus:ring-2 focus:ring-ring"
                   />
                   {state.errors?.fieldErrors?.author && (
                     <div
@@ -111,12 +112,13 @@ export default function AddNewQuotePage() {
                         ? "category-error"
                         : undefined
                     }
-                    defaultValue={state.data?.category}
+                    defaultValue=""
                     {...register("category")}
                   >
                     <option
                       value=""
                       disabled
+                      selected
                       className="bg-white text-slate-500 dark:bg-slate-800 dark:text-slate-400"
                     >
                       Select a category
@@ -159,7 +161,7 @@ export default function AddNewQuotePage() {
                   <Textarea
                     id="quote"
                     placeholder="Add the quote"
-                    className="resize-none"
+                    className="resize-none bg-background text-foreground border border-input focus:ring-2 focus:ring-ring"
                     aria-invalid={!!state.errors?.fieldErrors?.quote}
                     aria-describedby={
                       state.errors?.fieldErrors?.quote

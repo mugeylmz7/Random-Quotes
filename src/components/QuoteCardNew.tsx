@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H3 } from "@/components/typography/H3";
-import { Quote, QuotesContext } from "@/app/QuotesContext";
+import { Quote, QuotesContext } from "@/components/QuotesContext";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Heart, Pencil, Trash2 } from "lucide-react";
-import { deleteQuote } from "./actions/deleteQuote";
+import { deleteQuote } from "@/app/actions/deleteQuote";
 import { useState, useContext, useEffect } from "react";
-import { editQuote } from "./actions/editQuote";
+import { editQuote } from "@/app/actions/editQuote";
 import { Input } from "@/components/ui/input"; // Shadcn UI Input bileşenin varsa
 import { Textarea } from "@/components/ui/textarea"; // Shadcn UI Textarea bileşenin varsa
 import { motion } from "framer-motion";
@@ -88,9 +88,8 @@ export function QuoteCard({
             <Button
               variant={"icon"}
               size="icon"
-              disabled={!user}
               onClick={() => {
-                // 1. KORUMA: Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
+                // Eğer kullanıcı giriş yapmadıysa doğrudan Auth0 giriş sayfasına yönlendiriyoruz
                 if (!user) {
                   window.location.href = "/auth/login";
                   return;
@@ -102,7 +101,7 @@ export function QuoteCard({
               className="transition-transform active:scale-125"
             >
               {isLiked ? (
-                // EĞER BEĞENİLDİYSE: Üzerine gelince "Kırık Kalp" çıksın
+                // Eğer beğenildiyse üzerine gelince "Kırık Kalp" çıksın
                 <Heart className="fill-red-500 text-red-500" />
               ) : (
                 <Heart className="text-slate-400" />

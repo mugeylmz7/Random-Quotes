@@ -1,8 +1,8 @@
 "use client";
 
 import { useContext, useState, useEffect } from "react";
-import { QuotesContext } from "@/app/QuotesContext";
-import { QuoteCard } from "./QuoteCardNew";
+import { QuotesContext } from "@/components/QuotesContext";
+import { QuoteCard } from "@/components/QuoteCardNew";
 
 export default function Home() {
   const {
@@ -55,7 +55,7 @@ export default function Home() {
   };
 
   return (
-    <main className="dark:bg-slate-900 min-h-[calc(100vh-5.5rem)] flex items-center justify-center p-4">
+    <main className="min-h-[calc(100vh-5.5rem)] flex items-center justify-center p-4 bg-background text-foreground transition-colors">
       {/* DÜZELTME: Hem Kategorileri hem de Kartı tek bir dikey kapsayıcı div'e alıyoruz */}
       <div className="w-full max-w-2xl mx-auto space-y-8 flex flex-col items-center">
         {/* KATEGORİ FİLTRE BUTONLARI */}

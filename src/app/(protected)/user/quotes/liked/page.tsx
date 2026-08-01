@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { QuotesContext } from "@/app/QuotesContext";
+import { QuotesContext } from "@/components/QuotesContext";
 import { Button } from "@/components/Button";
 import { useTheme } from "next-themes";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -19,7 +19,7 @@ export default function LikedQuotesPage() {
   );
 
   return (
-    <main className="min-h-[calc(100vh-5.5rem)] p-8" suppressHydrationWarning>
+    <main className="min-h-[calc(100vh-5.5rem)] p-8 bg-background text-foreground transition-colors" suppressHydrationWarning>
       <section className="max-w-2xl mx-auto">
         <h1 className="mb-8 text-center text-3xl font-bold tracking-tight blue-950 dark:color-blue-50">
           My Liked Quotes ❤️

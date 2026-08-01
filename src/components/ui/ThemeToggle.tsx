@@ -19,10 +19,9 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
-          className="relative border border-slate-300 dark:border-slate-700 hover:scale-105 hover:shadow-md hover:shadow-blue-100
-          hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 dark:hover:shadow-lg dark:hover:shadow-blue-950/20"
+          className="relative border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:scale-105 hover:shadow-md hover:shadow-blue-100/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 dark:hover:shadow-lg dark:hover:shadow-blue-950/40"
           aria-label="Toggle dark mode"
         >
           <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
@@ -30,7 +29,7 @@ export function ThemeToggle() {
           <span className="sr-only">Change Theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" >
         <DropdownMenuItem
           onClick={() => setTheme("light")}
           className={undefined}
